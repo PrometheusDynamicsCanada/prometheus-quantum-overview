@@ -4,8 +4,8 @@
   "scope_note": "Single authoritative accounting source across all 13 quantum repositories under PrometheusDynamicsCanada (excluding standalone Linux XDP security repository argus-server-protection, classical NVIDIA H100 GPU runs, simulations, 3 unrecovered queue dispatches, and 2 setup smoke tests). Every hardware Job ID / AWS Braket Task ARN is counted exactly once.",
   "portfolio_totals": {
     "quantum_repositories_total": 13,
-    "unique_provider_records": 630,
-    "completed_benchmark_jobs_or_tasks": 621,
+    "unique_provider_records": 642,
+    "completed_benchmark_jobs_or_tasks": 633,
     "auxiliary_warmup_or_troubleshooting_records": 9,
     "ibm_quantum_records": {
       "total": 369,
@@ -13,17 +13,19 @@
       "auxiliary_records": 3
     },
     "aws_braket_programset_tasks": {
-      "total": 22,
-      "benchmark_tasks": 22,
-      "auxiliary_records": 0
+      "total": 34,
+      "benchmark_tasks": 34,
+      "auxiliary_records": 0,
+      "superconducting_programset_tasks": 22,
+      "neutral_atom_ahs_tasks": 12
     },
     "iqm_resonance_records": {
       "total": 239,
       "benchmark_jobs": 233,
       "auxiliary_records": 6
     },
-    "physical_circuits_or_pubs": 14200,
-    "physical_measurement_shots": 20988160
+    "physical_circuits_or_pubs": 14212,
+    "physical_measurement_shots": 20991160
   },
   "matched_107_job_ibm_compiler_corpus_summary": {
     "source_repository": "prometheus-quantum-and-gpu-benchmarks",
@@ -1493,13 +1495,13 @@
     },
     {
       "repository": "prometheus-braket-validation",
-      "role": "Rigetti Cepheus-1-108Q 3-Window Replication & Equal-CPU-Budget Controls on AWS Braket",
-      "verification_tier": "Full metric reconstruction from raw bitstring histograms across all 450 circuits (Tasks 1-2 runner-resume timestamp caveat disclosed)",
-      "incremental_provider_records": 10,
-      "incremental_benchmark_jobs": 10,
+      "role": "Multi-Window Validation on AWS Braket Across 108Q Rigetti Cepheus-1-108Q (Superconducting) and 256-Atom QuEra Aquila (Neutral-Atom AHS)",
+      "verification_tier": "Full metric reconstruction from raw bitstring histograms across all 450 Rigetti circuits (Tasks 1-2 runner-resume timestamp caveat disclosed) plus raw pre_sequence/post_sequence shot reconstruction across all 12 QuEra Aquila neutral-atom tasks (3,000 Rb-87 shots)",
+      "incremental_provider_records": 22,
+      "incremental_benchmark_jobs": 22,
       "incremental_auxiliary_records": 0,
-      "incremental_physical_pubs": 450,
-      "incremental_physical_shots": 460800,
+      "incremental_physical_pubs": 462,
+      "incremental_physical_shots": 463800,
       "unique_provider_ids": [
         "arn:aws:braket:us-west-1:893688540163:quantum-task/2a6b5957-bbf1-43a5-9194-c87da64399bf",
         "arn:aws:braket:us-west-1:893688540163:quantum-task/8b348409-6ac6-4762-b6b1-7b9fb279ed5f",
@@ -1510,7 +1512,19 @@
         "arn:aws:braket:us-west-1:893688540163:quantum-task/c9e0645b-739d-4c3c-aee1-739dcbcf48c5",
         "arn:aws:braket:us-west-1:893688540163:quantum-task/cc7fe5bb-71ac-4d1c-9b2d-02f544ec917b",
         "arn:aws:braket:us-west-1:893688540163:quantum-task/d1caac13-a61b-4c97-862c-f5e0480772cb",
-        "arn:aws:braket:us-west-1:893688540163:quantum-task/eec556a3-2cd0-4eba-8791-4737cee60aa9"
+        "arn:aws:braket:us-west-1:893688540163:quantum-task/eec556a3-2cd0-4eba-8791-4737cee60aa9",
+        "arn:aws:braket:us-east-1:893688540163:quantum-task/b48c8077-1bde-4200-b43d-7e00b1f67730",
+        "arn:aws:braket:us-east-1:893688540163:quantum-task/08c02636-aa6b-43d9-ad4f-02c3645f52b3",
+        "arn:aws:braket:us-east-1:893688540163:quantum-task/7cba59c1-a937-4501-ad49-d68c9fdabc3b",
+        "arn:aws:braket:us-east-1:893688540163:quantum-task/c2d84a13-cba2-49ef-920c-90f9b94986d8",
+        "arn:aws:braket:us-east-1:893688540163:quantum-task/b0aa917c-caa3-4164-a526-77ff21db97f3",
+        "arn:aws:braket:us-east-1:893688540163:quantum-task/f95ab630-d0e2-4a2b-bab8-1fe83c9b2797",
+        "arn:aws:braket:us-east-1:893688540163:quantum-task/09542580-f2cd-4099-83b3-2376693b2830",
+        "arn:aws:braket:us-east-1:893688540163:quantum-task/c1b16629-3e8e-416d-bdde-0070f29edf50",
+        "arn:aws:braket:us-east-1:893688540163:quantum-task/88a26a0b-91b0-4727-ac41-80795a0a0f7f",
+        "arn:aws:braket:us-east-1:893688540163:quantum-task/9e5b0732-f4c5-4abe-836e-a0ccdb742a7b",
+        "arn:aws:braket:us-east-1:893688540163:quantum-task/ce66eabb-117e-40ec-8244-f9a48952a0bc",
+        "arn:aws:braket:us-east-1:893688540163:quantum-task/6d0844a8-e60c-410c-8da5-016fad5b908b"
       ]
     },
     {

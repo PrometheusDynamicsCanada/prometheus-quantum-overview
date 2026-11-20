@@ -2,9 +2,10 @@
 
 Prometheus is designed to evaluate and optimize quantum execution economics across multiple hardware architectures and cloud providers:
 
-1. **Superconducting Heavy-Hex & Square/Crystal Lattices (Operational Across 630 Cloud QPU Records):**
+1. **Superconducting & Neutral-Atom Cloud QPU Corpus (Operational Across 642 Cloud QPU Records):**
    - **IBM Quantum (156Q Heron r2):** `ibm_fez`, `ibm_marrakesh`, and `ibm_kingston`.
    - **IQM Resonance & Amazon Braket Superconducting QPUs:** `IQM Emerald` (54Q), `IQM Garnet` (20Q), and `Rigetti Cepheus-1-108Q` (108Q).
+   - **Amazon Braket Neutral-Atom Analog QPU (`QuEra Aquila`, 256 Atoms):** Validated across two separated execution windows (`12` AHS tasks, `3,000` physical Rb-87 shots in [`prometheus-braket-validation`](https://github.com/PrometheusDynamicsCanada/prometheus-braket-validation)).
 2. **Application Cost-to-Accuracy & Closed-Loop Variational Workflows (Operational):**
    - End-to-end molecular chemistry energy evaluation and cold-start iterative `SPSA` optimization (`prometheus-quantum-chemistry`), pairing buffered multi-slice chip packing with reference-free early stopping and standalone confirmation.
    - Next engineering milestone: cross-provider noise calibration matching so multi-cloud fleet splits match or exceed single-provider confirmed accuracy.

@@ -40,25 +40,26 @@ def main() -> None:
     pub_sum = sum(int(r["incremental_physical_pubs"]) for r in repos)
     shot_sum = sum(int(r["incremental_physical_shots"]) for r in repos)
 
-    assert rec_sum == totals["unique_provider_records"] == 630
-    assert bench_sum == totals["completed_benchmark_jobs_or_tasks"] == 621
+    assert rec_sum == totals["unique_provider_records"] == 642
+    assert bench_sum == totals["completed_benchmark_jobs_or_tasks"] == 633
     assert aux_sum == totals["auxiliary_warmup_or_troubleshooting_records"] == 9
     assert bench_sum + aux_sum == rec_sum
-    assert pub_sum == totals["physical_circuits_or_pubs"] == 14200
-    assert shot_sum == totals["physical_measurement_shots"] == 20988160
+    assert pub_sum == totals["physical_circuits_or_pubs"] == 14212
+    assert shot_sum == totals["physical_measurement_shots"] == 20991160
 
     # Provider-family breakdown
     p_ibm = totals["ibm_quantum_records"]
     p_aws = totals["aws_braket_programset_tasks"]
     p_iqm = totals["iqm_resonance_records"]
     assert p_ibm["total"] == 369 and p_ibm["benchmark_jobs"] == 366 and p_ibm["auxiliary_records"] == 3
-    assert p_aws["total"] == 22 and p_aws["benchmark_tasks"] == 22 and p_aws["auxiliary_records"] == 0
+    assert p_aws["total"] == 34 and p_aws["benchmark_tasks"] == 34 and p_aws["auxiliary_records"] == 0
+    assert p_aws["superconducting_programset_tasks"] + p_aws["neutral_atom_ahs_tasks"] == 34
     assert p_iqm["total"] == 239 and p_iqm["benchmark_jobs"] == 233 and p_iqm["auxiliary_records"] == 6
-    assert p_ibm["total"] + p_aws["total"] + p_iqm["total"] == 630
-    assert p_ibm["benchmark_jobs"] + p_aws["benchmark_tasks"] + p_iqm["benchmark_jobs"] == 621
+    assert p_ibm["total"] + p_aws["total"] + p_iqm["total"] == 642
+    assert p_ibm["benchmark_jobs"] + p_aws["benchmark_tasks"] + p_iqm["benchmark_jobs"] == 633
     assert p_ibm["auxiliary_records"] + p_aws["auxiliary_records"] + p_iqm["auxiliary_records"] == 9
 
-    # Strict cross-repository deduplication check across all 601 IDs
+    # Strict cross-repository deduplication check across all 642 IDs
     all_ids = []
     by_repo = {}
     for r in repos:
@@ -70,7 +71,7 @@ def main() -> None:
         by_repo[r["repository"]] = set(uids)
         all_ids.extend(uids)
 
-    assert len(all_ids) == 630 and len(set(all_ids)) == 630, (
+    assert len(all_ids) == 642 and len(set(all_ids)) == 642, (
         f"Cross-repository duplicate Job ID detected: {len(all_ids)} total vs {len(set(all_ids))} unique"
     )
 
@@ -183,11 +184,23 @@ def main() -> None:
         assert {r["hardware_job_id"] for r in qgp_rows} == by_repo["prometheus-quality-gated-packing"]
         verified_qgp_sibling = True
 
+    sibling_braket_rig = root.parent / "prometheus-braket-validation" / "data" / "ALL_450_RIGETTI_CIRCUITS_RESULTS.csv"
+    sibling_braket_aq = root.parent / "prometheus-braket-validation" / "data" / "ALL_12_QUERA_AQUILA_TASKS_RESULTS.csv"
+    verified_braket_sibling = False
+    if sibling_braket_rig.is_file() and sibling_braket_aq.is_file():
+        rig_rows = list(csv.DictReader(sibling_braket_rig.open("r", encoding="utf-8")))
+        aq_rows = list(csv.DictReader(sibling_braket_aq.open("r", encoding="utf-8")))
+        assert len(rig_rows) == 450 and len(aq_rows) == 12
+        assert sum(int(r["shots"]) for r in rig_rows) + sum(int(r["shots"]) for r in aq_rows) == 463800
+        braket_arns = {r["task_arn"] for r in rig_rows} | {r["task_arn"] for r in aq_rows}
+        assert braket_arns == by_repo["prometheus-braket-validation"]
+        verified_braket_sibling = True
+
     print("=" * 92)
     print("PORTFOLIO ACCOUNTING & CROSS-REPOSITORY JOB-ID DEDUPLICATION AUDIT")
     print("=" * 92)
     print(f"  [PASS] Quantum Repositories Indexed      : {len(repos)}")
-    print(f"  [PASS] Unique Provider Records Verified  : {len(set(all_ids))} / 630 (0 duplicates; {bench_sum} bench + {aux_sum} aux)")
+    print(f"  [PASS] Unique Provider Records Verified  : {len(set(all_ids))} / 642 (0 duplicates; {bench_sum} bench + {aux_sum} aux)")
     print(f"  [PASS] Physical Circuits / PUBs Verified : {pub_sum:,d}")
     print(f"  [PASS] Physical Shots Verified           : {shot_sum:,d}")
     raw_tag = " + raw sibling JSON recomputed" if recomputed_from_raw else ""
@@ -196,6 +209,8 @@ def main() -> None:
         print("  [PASS] Phase 5 Sibling Ledger Cross-Check: 24 / 24 Job IDs, 129 unique workloads, 1,648 PUBs, 1,687,552 shots")
     if verified_qgp_sibling:
         print("  [PASS] Quality-Gated Packing Cross-Check : 29 / 29 Job IDs, 121 PUBs, 186,368 shots (96.0s IBM + 15.75cr IQM)")
+    if verified_braket_sibling:
+        print("  [PASS] Braket Two-Arch Cross-Check       : 22 / 22 Task ARNs (10 Rigetti + 12 QuEra Aquila), 462 runs, 463,800 shots")
 
     manifest_path = root / "REPO_SHA256_MANIFEST.json"
     if manifest_path.exists():
