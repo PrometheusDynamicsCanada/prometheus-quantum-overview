@@ -18,7 +18,7 @@
     "PORTFOLIO_ACCOUNTING_LEDGER.json": "bfefc9b28cd8f73874595731b1141b95009ddd70e08f5f35cd11ad25609096c4",
     "PROJECT_DIRECTION.md": "eeaed6a12567e1a4128eed0562b3883fab2f50171a8060b6595a7bf1af88bea2",
     "PUBLIC_DISCLOSURE.md": "20016d7d6d7d223d854eac59349b01cc188a07a0461865ce25971fb0816951b2",
-    "README.md": "f955d5ea56afafae5f884e29c8c710e98f1e14116fbcff9f7a37485646a00292",
+    "README.md": "766e44ccda268e59a400e5e02d51351a02c56884dd4a2de03bac146b5d8580f2",
     "results/RESULTS.md": "8fc1120a394bc930ea849368a63ea0b14e9a187403dfe5f543113879d61f3d1d",
     "SCREENSHOT_GALLERY.md": "2f30eb00d5208ab8f743fa7bfb8cb8a49475115b40375b6c63e7c3eba47d10b1",
     "screenshots/01-studio-overview.png": "7ee0f2b7d0facf6e38f4f56ec6ee5fc7d0b672f38dceb6c3fb40cd0f123d197d",
@@ -39,6 +39,7 @@
     "screenshots/16-observed-gains-topology-comparison2.png": "b24d80f02ef9353ab455047a09554a1ddd9bc63ce2523d053653edf87941eda5",
     "screenshots/17-observed-gains-topology-comparison3.png": "fd8bb4ee747ca075a3b43e428cbacb2f13f0c9888f349b3348e0ea76157da199",
     "screenshots/18-observed-gains-topology-comparison3-depth-comparison.png": "7d375eb8e1f736ccdbfc704a4108b717ed139ea4dfbfc1b9015f4d73ce61ba2c",
-    "scripts/verify_portfolio_accounting.py": "3322506ba9d673286b5135adffdfb5ea3e509be7238aa9a36e99f684c68125e7"
+    "scripts/verify_portfolio_accounting.py": "3322506ba9d673286b5135adffdfb5ea3e509be7238aa9a36e99f684c68125e7",
+    "assets/fig0_simple_scaling_absolute_and_gain.png": "5272b12dff74788dc598b74f50d5457a2c67bbfc556396ed5405fd1629c3a38d"
   }
 }
