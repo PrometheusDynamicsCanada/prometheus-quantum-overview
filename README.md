@@ -1,102 +1,101 @@
-# Prometheus: Get More Useful Work from Quantum Hardware
+# Prometheus Quantum: Verified Hardware Overview
 
-**Prometheus helps teams get more useful results from quantum hardware by improving how calculations are compiled, scheduled, and executed.**
+**Prometheus helps quantum teams cut cloud hardware spend, run more circuits per job, and keep wider non-local circuits accurate across IBM, IQM, Rigetti, and QuEra processors.**
 
-Cloud quantum processors charge by runtime or credit even when most of a chip sits idle, device calibration shifts, or fixed measurement budgets keep running after an answer has converged. Tested across superconducting and neutral-atom processors on IBM Quantum, IQM Resonance, and Amazon Braket alongside Qiskit SABRE, Quantinuum TKET, and documented vendor schedules, Prometheus delivered **52% to 69% lower charged hardware cost** per accepted molecular-energy result, **2.85x to 3.00x higher parallel throughput** per billed unit on small circuits, **repeated pass-versus-fail gains** on difficult dense circuits (`10/10` fresh passes and `5/5` repeat passes 32 hours later on IBM 15-qubit QFT, where both baselines passed `0`), and **two-window neutral-atom improvements** on `256`-atom `QuEra Aquila` (`881` vs. `852` exact optimal answers across `3,000` billed Rb-87 shots; `+18.11%` yield and `-15.35%` cost/optimum [`p = 0.0042`] on the hardest `12A` topology). Unresolved regimes and baseline wins are published alongside positive results.
+**[Website](https://prometheusdynamics.ca) · [Complexity Scaling Atlas](https://github.com/PrometheusDynamicsCanada/prometheus-circuit-complexity-atlas) · [Full Technical Report](DETAILED_TECHNICAL_REPORT.md) · [Start a Pilot](#start-a-pilot)**
 
-**[Detailed results](DETAILED_TECHNICAL_REPORT.md) · [Verify the evidence](#verify-the-evidence) · [Discuss a pilot](#discuss-a-pilot)**
+## At a Glance
 
-![Charged Hardware Resources per Accepted Molecular-Energy Result](assets/fig0_opening_chemistry_charged_cost.png)
-*Opening example ([`prometheus-quantum-chemistry`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-chemistry)): Charged IBM seconds (left) and IQM credits (right) per independently confirmed molecular-energy result across 24 unseen configurations repeated three times.*
-
----
-
-## 1. Customer Questions and Primary Evidence
-
-Full denominators, provider job IDs, and statistical tests for each campaign are documented in [`DETAILED_TECHNICAL_REPORT.md`](DETAILED_TECHNICAL_REPORT.md) and the linked repositories:
-
-| Customer Question | Primary Repository | Strongest Measured Outcome & Disclosed Boundary | Public Verification |
-| :--- | :--- | :--- | :--- |
-| **"Can I reduce what I spend per useful result?"** | **[`prometheus-quantum-chemistry`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-chemistry)** | **52% to 55% fewer IBM seconds** and **59% to 61% fewer IQM credits** per confirmed molecular-energy result (and **53% to 69% lower** during live iterative optimization); single-processor runs beat dual-cloud splits | Outcome-ledger, billing & optimization replay |
-| **"Can I get more work through one processor?"** | **[`prometheus-ibm-parallel-execution`](https://github.com/PrometheusDynamicsCanada/prometheus-ibm-parallel-execution)** · **[`prometheus-iqm-execution`](https://github.com/PrometheusDynamicsCanada/prometheus-iqm-execution)** · **[`prometheus-quality-gated-packing`](https://github.com/PrometheusDynamicsCanada/prometheus-quality-gated-packing)** | **2.85x** qualifying workloads per billed IBM second, **3.00x** per IQM credit, **-54.55% billed IBM seconds/accepted** (`8/8` in `5.0 s`) across 4 circuit families, and **-10.0%** via quality-gated `4-way` vs. `8-way` near threshold | Raw-histogram reconstruction |
-| **"Can difficult circuits pass quality checks?"** | **[`prometheus-practical-execution-limits`](https://github.com/PrometheusDynamicsCanada/prometheus-practical-execution-limits)** | **10/10 fresh + 5/5 (`+32h`)** confirmed passes on IBM 15Q dense QFT and **5/5** on IQM 12Q (`0` baseline passes); reports unresolved `16Q-17Q` and `ibm_fez` limits | Raw-histogram reconstruction |
-| **"How are these coordinated on a live queue?"** | **[`prometheus-quantum-execution`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-execution)** | **More accepted requests (`30` vs. `27`) at unchanged `18 s`** on IBM, **more accepted requests (`22` vs. `12`) at unchanged efficiency/credit** on IQM, and **0/31** false early stops | Outcome-ledger, billing & statistical audit |
-| **"Does this extend beyond superconducting gates?"** | **[`prometheus-braket-validation`](https://github.com/PrometheusDynamicsCanada/prometheus-braket-validation)** | **`+3.91%` 3-window overlap** (`+6.61%` post-recalibration) on `108Q` Rigetti plus **`881` vs. `852` exact optima** (`+18.11%` yield / `-15.35%` cost/opt on hardest `12A`, `p = 0.0042`; `-40.34%` suboptimal MIS outcomes across `6/6` tasks) on `256`-atom `QuEra Aquila` | Raw-histogram & per-shot `pre`/`post_sequence` reconstruction |
-| **"How does the advantage scale with qubit count & non-local connectivity?"** | **[`prometheus-circuit-complexity-atlas`](https://github.com/PrometheusDynamicsCanada/prometheus-circuit-complexity-atlas)** | **`27/32` (`84.4%`) `#1` 3-way wins** across `6` QPUs (`1.41M` shots): **`2.35x` vs. SABRE (`-20%` to `-42.9%` cr)** on `13Q` Star (`IQM Emerald`), **`2.90x` vs. SABRE (`+85.7%` vs. TKET)** on `Rigetti Cepheus-1`, and **`1.02x -> 1.99x` vs. SABRE (`1.16x -> 30.3x` vs. TKET)** from `7Q -> 23Q` Dense `K_N` | Raw-histogram + OpenQASM statevector reconstruction |
-
-### How Prometheus Works Alongside Existing Tools
-
-Prometheus complements Qiskit SABRE, Quantinuum TKET, and cloud provider runtimes rather than replacing them:
-- **Selects among execution options:** Evaluates candidate compilations across Qiskit SABRE, Quantinuum TKET, and Prometheus, falling back to baseline choices whenever extra routing gates would reduce quality.
-- **Accounts for hardware characteristics:** Incorporates live device connectivity and calibration metrics across superconducting topologies.
-- **Packs independent circuits:** Schedules compatible calculations simultaneously under a frozen execution policy.
-- **Adjusts measurement effort:** Halts converged runs early using sequential confidence checks and skips unnecessary recompilation.
-- **Checks results against acceptance criteria:** Pairs primary runs with independent confirmation measurements and native provider billing records.
-
-*Benchmark Value vs. Commercial Opportunity:* These repositories establish measured improvements in **charged hardware resources**, throughput, and pass rates on benchmark workloads (excluding software, classical compute, and integration costs). Evaluating whether those gains transfer to a customer's specific proprietary circuits and production workflow is the goal of a bounded pilot.
-
----
-
-## 1B. Scaling With Qubit Width & Non-Local Graph Complexity (`Star-Hub K_{1,N-1}` & `Dense All-to-All K_N`)
-
-Across `6` superconducting QPUs (`IBM Fez`, `IBM Kingston`, `IBM Marrakesh`, `IQM Emerald`, `IQM Garnet`, and `AWS Rigetti Cepheus-1`), grouping benchmarks by interaction topology and qubit width ([`prometheus-circuit-complexity-atlas`](https://github.com/PrometheusDynamicsCanada/prometheus-circuit-complexity-atlas)) shows that Prometheus's advantage is near zero on trivial `3Q-6Q` local circuits and **grows monotonically with non-local degree and qubit count** - directly addressing the `K_{1,N-1}` ancilla-fanout bottleneck of Hadamard-test / `QC-AFQMC` overlaps, `QPE`, and Pauli gadgets as well as `K_N` fermionic orbital rotations and dense `QUBO` / `QFT` subroutines:
+- **What Prometheus does:** Works alongside Qiskit SABRE O3 and Quantinuum TKET to route circuits, pack compatible jobs onto one chip, stop converged measurements early, and confirm results.
+- **Lower billed spend:** **52% to 69% less QPU time/credits** per confirmed `<= 25 mHa` chemistry result, and **54.55% less IBM time** per accepted multi-family job.
+- **Stronger gains as circuits grow:** Near parity on simple `3Q-6Q` chains, rising to **`2.35x-3.05x` overlap** on `13Q` Star-Hub circuits and **`1.57x-1.99x` vs. SABRE (`3.7x-30.3x` vs. TKET)** on `18Q-23Q` Dense All-to-All circuits.
+- **Verified multi-cloud scale:** **`829` unique cloud QPU records** (`819` benchmark + `10` auxiliary, `0` duplicates), **`14,676` PUBs/schedules**, and **`22.40M` physical shots** across `7` cloud QPUs (`14` open quantum repositories).
 
 ![Non-Local Connectivity and Qubit-Width Scaling Across IBM Heron, IQM Crystal and AWS Rigetti](assets/fig1_nonlocal_scaling_star_and_dense_kn.png)
+*Measured hardware scaling across `3Q-13Q` Central-Hub Star (`K_{1,N-1}`) and `7Q-23Q` Dense All-to-All (`K_N`) circuits on IBM, IQM, and AWS Rigetti.*
 
 ---
 
-## 2. Matched 107-Job 3-Way IBM Heron Compiler Corpus Summary (`321` Circuits, `4,964,352` Shots)
+## 1. Key Questions & Where to Find the Proof
 
-> [!NOTE]
-> **Metric Conventions:** Classical Bhattacharyya Distribution Overlap is $F_B = \sum_x \sqrt{P_{\text{ideal}}(x) P_{\text{meas}}(x)}$ (labeled `"State Fidelity"` in Studio UIs); Squared Hellinger Fidelity is $F_H = F_B^2$; Total Variation Distance is $\text{TVD} = \frac{1}{2}\sum_x |P_{\text{ideal}}(x) - P_{\text{meas}}(x)|$. Direction indicators `(↑)` and `(↓)` show optimality; **bold** marks row winners. Kept strictly separate from whole-portfolio job totals; full per-family tables and Studio screenshots are in [`DETAILED_TECHNICAL_REPORT.md`](DETAILED_TECHNICAL_REPORT.md).
+| Question | Headline Hardware Finding | Primary Repository |
+| :--- | :--- | :--- |
+| **Can I spend less per chemistry result?** | **`-52%` to `-69%`** charged IBM seconds & IQM credits (`172` jobs, `49/49` stops confirmed) | [`prometheus-quantum-chemistry`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-chemistry) |
+| **How does it scale on wider / non-local graphs?** | **`27/32` (`84.4%`) `#1` wins**; **`2.35x-3.05x`** on `13Q` Star & **`1.57x`** on `18Q-19Q` Dense `K_N` | [`prometheus-circuit-complexity-atlas`](https://github.com/PrometheusDynamicsCanada/prometheus-circuit-complexity-atlas) |
+| **Can I pack multiple circuits onto one chip?** | **`2.85x`/IBM s**, **`3.00x`/IQM credit**, and **`-54.55%` IBM s/accepted** across 4 families | [`prometheus-quality-gated-packing`](https://github.com/PrometheusDynamicsCanada/prometheus-quality-gated-packing) · [`prometheus-ibm-parallel-execution`](https://github.com/PrometheusDynamicsCanada/prometheus-ibm-parallel-execution) |
+| **Can difficult dense circuits pass checks?** | **`10/10` fresh + `5/5` (`+32h`)** passes on `15Q` IBM QFT & **`5/5`** on `12Q` IQM (`0` baseline) | [`prometheus-practical-execution-limits`](https://github.com/PrometheusDynamicsCanada/prometheus-practical-execution-limits) |
+| **How does live queue & shot stopping behave?** | **`30/36` vs. `27/36`** accepted at `18 s` (IBM), **`+83.3%`** yield (IQM), **`0/31`** false stops | [`prometheus-quantum-execution`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-execution) |
+| **Does it work on Rigetti & neutral atoms?** | **`+6.61%`** post-recal on `108Q` Rigetti + **`+18.11%`** `12A` yield (`p = 0.0042`) on `256Q` QuEra | [`prometheus-braket-validation`](https://github.com/PrometheusDynamicsCanada/prometheus-braket-validation) |
 
-| Metric & Direction *(Source: [`ibm_heron_156q_verified_benchmarks.json`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-and-gpu-benchmarks/blob/main/ibm_heron_156q_verified_benchmarks.json))* | Pooled Corpus (`N = 107`, `4Q-23Q`) `*(mean / median)*`: Prom / SABRE / TKET | Pooled Mean Delta vs. SABRE / TKET | Dense All-to-All `K_N` (`N = 69`, `7Q-23Q`) `*(mean / median)*`: Prom / SABRE / TKET | Dense `K_N` Mean Delta & Pairwise Wins |
-| :--- | :---: | :---: | :---: | :---: |
-| **Distribution Overlap $F_B$ `(↑)`** | **0.3780 / 0.2076** · 0.3494 / 0.1645 · 0.2971 / 0.0732 | **+8.17%** / **+27.23%** | **0.2186 / 0.1444** · 0.1731 / 0.0963 · 0.1091 / 0.0321 | **+26.31%** *(+50.0% med)* / **+100.45%** (`57/69` vs. S · `68/69` vs. T) |
-| **Heavy-Output Probability $\text{HOP}$ `(↑)`** | **53.70% / 60.81%** · 52.13% / 57.32% · 50.23% / 56.79% | **+1.58 pp** / **+3.47 pp** | **63.55% / 61.98%** · 61.08% / 59.19% · 58.54% / 58.72% | **+2.47 pp** / **+5.01 pp** (`50/69` vs. S · `52/69` vs. T) |
-| **Total Variation Distance $\text{TVD}$ `(↓)`** | **0.6286 / 0.7501** · 0.6565 / 0.8088 · 0.7184 / 0.8851 | **-4.24%** / **-12.50%** | **0.7573 / 0.8089** · 0.8035 / 0.8571 · 0.8761 / 0.9440 | **-5.74%** / **-13.56%** (`58/69` vs. S · `68/69` vs. T) |
-| **Linear Cross-Entropy $\text{XEB}$ `(↑)`** | **290.29 / 55.70** · 233.51 / 35.04 · 109.40 / 10.20 | **+24.31%** / **+165.34%** | **316.09 / 185.67** · 228.74 / 80.28 · 40.10 / 22.92 | **+38.19%** / **+688.35%** (`54/69` vs. S · `68/69` vs. T) |
-| **Observed Shannon Entropy $H$ `(bits, ↓)`** | **11.67 / 12.94** · 11.79 / 13.17 · 11.92 / 13.53 | **-0.99%** / **-2.09%** | **12.54 / 13.37** · 12.72 / 13.53 · 12.94 / 13.79 | **-1.40%** / **-3.11%** (`56/69` vs. S · `68/69` vs. T) |
-| **Native Two-Qubit `CZ` Gates `(↓)`** | **290.86 / 317.00** · 338.84 / 351.00 · 532.50 / 559.00 | **-14.16%** / **-45.38%** | **351.96 / 358.00** · 410.38 / 436.00 · 667.87 / 717.00 | **-14.24%** / **-47.30%** (`61/69` vs. S · `69/69` vs. T) |
-| **Compiled Circuit Depth `(↓)`** | **256.64 / 266.00** · 321.19 / 342.00 · 464.09 / 478.00 | **-20.10%** / **-44.70%** | **279.78 / 295.00** · 361.36 / 370.00 · 505.26 / 501.00 | **-22.58%** / **-44.63%** (`69/69` wins vs. TKET) |
+## 2. Executive Compiler Summary (`N = 107` Matched 3-Way IBM Heron Jobs, `321` Circuits, `4,964,352` Shots)
+
+*Hardware IDs:* `dbajlrhgv2cc73e6vuj0` .. `daf9p65nj4cs73ag3f20` across `ibm_fez`, `ibm_kingston`, and `ibm_marrakesh` (`4Q-23Q`, `*(mean)*` values shown; `*(median)*` values and `69`-job Dense `K_N` slice are in the expandable section below).
+
+| Compiler (`N = 107` Jobs) | Overlap $F_B$ `(↑)` | Hellinger $F_H$ `(↑)` | `HOP` `(↑)` | `TVD` `(↓)` | `XEB` `(↑)` | Entropy `(↓)` | `2Q` `CZ` / Depth `(↓)` | Mean $F_B$ Delta |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Qiskit SABRE O3** | `0.3494` | `0.2624` | `52.13%` | `0.6565` | `233.5` | `11.79` | `338.8` / `321.2` | Best Baseline (`27/107` wins) |
+| **Quantinuum TKET** | `0.2971` | `0.2277` | `50.23%` | `0.7184` | `109.4` | `11.92` | `532.5` / `464.1` | `-14.97%` vs. SABRE |
+| **Prometheus** | **`0.3780`** | **`0.2742`** | **`53.70%`** | **`0.6286`** | **`290.3`** | **`11.67`** | **`290.9` / `256.6`** | **`+8.17%` vs. S (`+26.31%` on `K_N`)** |
+
+*Metric Key:* $F_B = \sum_x \sqrt{P_{\text{ideal}}(x)P_{\text{meas}}(x)}$ (labeled `"State Fidelity"` in Studio UIs); $F_H = F_B^2$. `(↑)` higher is better, `(↓)` lower is better; **bold** marks winners. All baseline wins and unresolved regimes are published in full.
 
 ---
 
-## Verify the Evidence
+## Verify & Start a Pilot
 
-**Reconciled Portfolio Scope (`14` Quantum Repositories):** `829` unique provider records (`819` completed benchmark jobs/tasks + `10` auxiliary records) and `22,398,648` (`22.40M`) physical measurement shots across `7` cloud QPUs (`6` superconducting + `256`-atom `QuEra Aquila`).
+- **Zero-credential 829-ID deduplication & SHA-256 audit:** `python scripts/verify_portfolio_accounting.py`
+- **Start a supported pilot (`5-50` OpenQASM circuits):** [william@prometheusdynamics.ca](mailto:william@prometheusdynamics.ca) | [prometheusdynamics.ca](https://prometheusdynamics.ca)
 
-Global portfolio totals are maintained exclusively in [`PORTFOLIO_ACCOUNTING_LEDGER.json`](PORTFOLIO_ACCOUNTING_LEDGER.json) (`0` cross-repository duplicate Job IDs; simulations, classical GPU runs, unrecovered queue dispatches, and two setup smoke tests excluded; multiplexed physical shots are never multiplied by packed component circuits):
-- **14 Quantum Repositories:** **`829` Unique Provider Records** = **`819` Completed Benchmark Jobs/Tasks** + `10` Auxiliary Warm-Up/Troubleshooting/Superseded/Cancelled Records (`475` IBM Heron [`472` bench + `3` aux], `306` IQM Resonance [`299` bench + `7` aux], `48` AWS Braket tasks [`36` superconducting `Rigetti/IQM` + `12` `QuEra Aquila` neutral-atom `AHS`]) | **`14,676` Physical Circuits/PUBs/Schedules** | **`22,398,648` Physical Measurement Shots**.
+---
 
-```bash
-python scripts/verify_portfolio_accounting.py
-```
+## Deep-Dive Tables, All 14 Quantum Repositories & Technical Notes
 
-| # | Repository | Incremental Scope (`Jobs`, `PUBs`, `Shots`) | Focus & Verification Kind ([`PUBLIC_DISCLOSURE.md`](PUBLIC_DISCLOSURE.md)) |
+<details>
+<summary><strong>1. Complete Directory of All 14 Quantum Repositories (829 Unique Cloud Records · 22.40M Shots) - Click to expand</strong></summary>
+
+Global portfolio totals are maintained in [`PORTFOLIO_ACCOUNTING_LEDGER.json`](PORTFOLIO_ACCOUNTING_LEDGER.json) (`829` unique provider records = `819` completed benchmark jobs/tasks + `10` auxiliary records across `475` IBM Quantum, `306` IQM Resonance, and `48` AWS Braket tasks; `14,676` PUBs/schedules; `22,398,648` physical shots; `0` cross-repository duplicates; simulations and GPU runs excluded):
+
+| # | Repository | Incremental Scope (`Jobs`, `PUBs`, `Shots`) | Focus & Offline Verification Kind ([`PUBLIC_DISCLOSURE.md`](PUBLIC_DISCLOSURE.md)) |
 | :---: | :--- | :---: | :--- |
-| **1** | **[`prometheus-quantum-overview`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-overview)** | Hub (`0` incremental) | Portfolio overview, architecture ([`ARCHITECTURE.md`](ARCHITECTURE.md)), & **829-ID deduplication verifier** (`scripts/verify_portfolio_accounting.py`) |
-| **2** | **[`prometheus-quantum-chemistry`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-chemistry)** | `172` jobs · `4,812` PUBs · `3,756,032` shots | Lower charged QPU cost per confirmed `<= 25 mHa` chemistry result · **Outcome-ledger, billing & 42-trajectory SPSA replay audit** |
-| **3** | **[`prometheus-practical-execution-limits`](https://github.com/PrometheusDynamicsCanada/prometheus-practical-execution-limits)** | `24` jobs · `1,648` PUBs · `1,687,552` shots | Repeated dense pass-vs-fail boundaries across processors & `+32h` (`129` unique workloads) · **Raw-histogram reconstruction (`numpy`)** |
-| **4** | **[`prometheus-quantum-execution`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-execution)** | `157` rec (`149` bench) · `2,509` PUBs · `2,093,568` shots | Queue management, separated IBM/IQM economics & live shot stopping (`0/31` false stops) · **Outcome-ledger, billing & CRVE audit** |
-| **5** | **[`prometheus-ibm-parallel-execution`](https://github.com/PrometheusDynamicsCanada/prometheus-ibm-parallel-execution)** | `19` jobs · `586` PUBs · `655,360` shots | Simultaneous 8-way parallel throughput on IBM Heron (`2.85x`/billed s) + selection study · **Raw-histogram reconstruction (`1,140` evals)** |
-| **6** | **[`prometheus-iqm-execution`](https://github.com/PrometheusDynamicsCanada/prometheus-iqm-execution)** | `59` jobs · `1,479` PUBs · `1,135,616` shots | Separate 4-way IQM parallel (`3.00x`/credit) & dense-compilation (`+3.73%`) studies · **Raw-histogram reconstruction (`1,935` evals)** |
-| **7** | **[`prometheus-ibm-compiler-benchmarks`](https://github.com/PrometheusDynamicsCanada/prometheus-ibm-compiler-benchmarks)** | `10` jobs · `441` circs · `755,712` shots | Same-window 3-way IBM compiler comparisons (`65/99` vs. SABRE, `89/99` vs. TKET) · **Raw payload (`144`) + tournament ledger audit** |
-| **8** | **[`prometheus-ibm-scaling-benchmarks`](https://github.com/PrometheusDynamicsCanada/prometheus-ibm-scaling-benchmarks)** | `17` jobs · `1,023` circs · `1,047,552` shots | Multi-processor application circuits (`+5.42%` $F_H$, 453-seed controls) + 8Q-101Q mirrors · **Raw-measurement archive reconstruction** |
-| **9** | **[`prometheus-braket-validation`](https://github.com/PrometheusDynamicsCanada/prometheus-braket-validation)** | `22` tasks · `462` runs · `463,800` shots | 3-window tracking on `108Q` Rigetti (`+3.91%`) + 2-window neutral-atom validation on `256`-atom `QuEra Aquila` (`881` vs. `852` optima) · **Raw-histogram + per-shot neutral-atom reconstruction** |
-| **10** | **[`prometheus-processor-selection`](https://github.com/PrometheusDynamicsCanada/prometheus-processor-selection)** | Shared (`33` job ZIPs in #12 + `4` in #7) | Observed `2.75x` cross-processor spread across sibling 156Q IBM chips (`16Q-23Q`) · **Raw IBM Job ZIP payload reconstruction** |
-| **11** | **[`prometheus-noise-aware-routing`](https://github.com/PrometheusDynamicsCanada/prometheus-noise-aware-routing)** | `14` jobs · `774` PUBs · `4,125,440` shots | Exploratory routing studies: `30/40` wins, `10/40` SWAP-overhead losses, distribution shifts · **Raw Qiskit `BitArray` reconstruction** |
-| **12** | **[`prometheus-quantum-and-gpu-benchmarks`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-and-gpu-benchmarks)** | `119` QPU jobs · `357` circs · `5,084,160` shots | `107` IBM + `12` Braket QPU jobs archived alongside `150` separate classical H100 QUBO runs · **Outcome-ledger & schedule feasibility audit** |
-| **13** | **[`prometheus-quality-gated-packing`](https://github.com/PrometheusDynamicsCanada/prometheus-quality-gated-packing)** | `29` rec (`28` bench) · `121` PUBs · `186,368` shots | 3-campaign quality-gated `4-way` vs. `8-way` `ABCCBA` (`-10.0%` s/acc near floor) & 4-family packing (`-54.55%` s/acc) · **Raw-histogram reconstruction (`numpy`)** |
-| **14** | **[`prometheus-circuit-complexity-atlas`](https://github.com/PrometheusDynamicsCanada/prometheus-circuit-complexity-atlas)** | `187` rec (`186` bench) · `464` PUBs · `1,407,488` shots | Common-denominator complexity & width scaling (`3Q-17Q` Star-Hub, Chemistry, Simultaneous 5-QPU Matrix; `27/32` `#1` wins) · **Raw-histogram + OpenQASM statevector reconstruction** |
+| **1** | **[`prometheus-quantum-overview`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-overview)** | Hub (`0` incremental) | Portfolio hub, [`ARCHITECTURE.md`](ARCHITECTURE.md), & **829-ID deduplication verifier** |
+| **2** | **[`prometheus-quantum-chemistry`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-chemistry)** | `172` jobs · `4,812` PUBs · `3,756,032` shots | `-52%` to `-69%` QPU cost per confirmed `<= 25 mHa` calc · **Ledger, billing & 42-run SPSA replay** |
+| **3** | **[`prometheus-practical-execution-limits`](https://github.com/PrometheusDynamicsCanada/prometheus-practical-execution-limits)** | `24` jobs · `1,648` PUBs · `1,687,552` shots | `10/10` fresh + `5/5` (`+32h`) `15Q` QFT passes + boundaries · **Raw-histogram reconstruction** |
+| **4** | **[`prometheus-quantum-execution`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-execution)** | `157` rec (`149` bench) · `2,509` PUBs · `2,093,568` shots | Queue management & sequential shot stopping (`0/31` false stops) · **Billing & CRVE audit** |
+| **5** | **[`prometheus-ibm-parallel-execution`](https://github.com/PrometheusDynamicsCanada/prometheus-ibm-parallel-execution)** | `19` jobs · `586` PUBs · `655,360` shots | `2.85x` workloads/billed IBM second (8-way simultaneous) · **Raw-histogram reconstruction** |
+| **6** | **[`prometheus-iqm-execution`](https://github.com/PrometheusDynamicsCanada/prometheus-iqm-execution)** | `59` jobs · `1,479` PUBs · `1,135,616` shots | `3.00x`/IQM credit 4-way parallel & `+3.73%` dense compilation · **Raw-histogram reconstruction** |
+| **7** | **[`prometheus-ibm-compiler-benchmarks`](https://github.com/PrometheusDynamicsCanada/prometheus-ibm-compiler-benchmarks)** | `10` jobs · `441` circs · `755,712` shots | Same-window 3-way IBM tournaments (`65/99` vs. S, `89/99` vs. T) · **Raw payload + ledger audit** |
+| **8** | **[`prometheus-ibm-scaling-benchmarks`](https://github.com/PrometheusDynamicsCanada/prometheus-ibm-scaling-benchmarks)** | `17` jobs · `1,023` circs · `1,047,552` shots | `4Q-17Q` 3-QPU repeat (`453`-seed SABRE control) + `8Q-101Q` mirrors · **Raw archive check** |
+| **9** | **[`prometheus-braket-validation`](https://github.com/PrometheusDynamicsCanada/prometheus-braket-validation)** | `22` tasks · `462` runs · `463,800` shots | `108Q` Rigetti 3-window + `256`-atom QuEra Aquila MIS (`881` vs. `852` optima) · **Raw shot check** |
+| **10** | **[`prometheus-processor-selection`](https://github.com/PrometheusDynamicsCanada/prometheus-processor-selection)** | Shared (`33` job ZIPs in #12 + `4` in #7) | `2.75x` observed spread across sibling `156Q` IBM Heron chips · **Raw IBM Job ZIP check** |
+| **11** | **[`prometheus-noise-aware-routing`](https://github.com/PrometheusDynamicsCanada/prometheus-noise-aware-routing)** | `14` jobs · `774` PUBs · `4,125,440` shots | Exploratory `30/40` routing wins vs. `10/40` SWAP losses · **Raw `BitArray` reconstruction** |
+| **12** | **[`prometheus-quantum-and-gpu-benchmarks`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-and-gpu-benchmarks)** | `119` QPU jobs · `357` circs · `5,084,160` shots | `107` IBM + `12` Braket QPU jobs + separate `150`-run H100 QUBO study · **Ledger & schedule check** |
+| **13** | **[`prometheus-quality-gated-packing`](https://github.com/PrometheusDynamicsCanada/prometheus-quality-gated-packing)** | `29` rec (`28` bench) · `121` PUBs · `186,368` shots | `-54.55%` IBM s/acc (4 families) & `ABCCBA` `4-way` vs. `8-way` · **Raw-histogram check** |
+| **14** | **[`prometheus-circuit-complexity-atlas`](https://github.com/PrometheusDynamicsCanada/prometheus-circuit-complexity-atlas)** | `187` rec (`186` bench) · `464` PUBs · `1,407,488` shots | `3Q-17Q` Star-Hub, Chemistry & Simultaneous 5-QPU Matrix (`27/32` `#1`) · **QASM + histogram check** |
 
-*(Standalone Non-Quantum Product: [`argus-server-protection`](https://github.com/PrometheusDynamicsCanada/argus-server-protection) documents Linux connection-flood protection and is independent of the quantum portfolio.)*
+*(Adjacent non-quantum repositories under the same GitHub account: [`argus-server-protection`](https://github.com/PrometheusDynamicsCanada/argus-server-protection) and [`Hyperion-fusion-telemetry`](https://github.com/PrometheusDynamicsCanada/Hyperion-fusion-telemetry).)*
 
----
+</details>
 
-## Discuss a Pilot
+<details>
+<summary><strong>2. Full Mean & Median Breakdown on Dense All-to-All K_N (N = 69 Jobs) + Chemistry Cost Chart - Click to expand</strong></summary>
 
-**Bring a representative workload and an acceptance criterion. We can compare Prometheus with your existing execution approach and measure quality, acceptance rate and charged hardware resources.**
+### Dense All-to-All `K_N` Subset (`N = 69` Matched 3-Way IBM Heron Jobs, `7Q-23Q`, `207` Circuits, `3,317,760` Shots)
 
-- **Contact:** [william@prometheusdynamics.ca](mailto:william@prometheusdynamics.ca) | [prometheusdynamics.ca](https://prometheusdynamics.ca)
-- **Supporting documentation:** [`DETAILED_TECHNICAL_REPORT.md`](DETAILED_TECHNICAL_REPORT.md) · [`PUBLIC_DISCLOSURE.md`](PUBLIC_DISCLOSURE.md) · [`ARCHITECTURE.md`](ARCHITECTURE.md) · [`SCREENSHOT_GALLERY.md`](SCREENSHOT_GALLERY.md)
+| Compiler (`N = 69` `K_N` Jobs) | $F_B$ `*(mean / med)*` `(↑)` | $F_H$ `*(mean / med)*` `(↑)` | `HOP` `*(mean / med)*` `(↑)` | `TVD` `*(mean / med)*` `(↓)` | `XEB` `*(mean / med)*` `(↑)` | Entropy `*(mean / med)*` `(↓)` | `2Q` `CZ` / Depth `*(mean)*` `(↓)` | Pairwise Wins |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Qiskit SABRE O3** | `0.1731` / `0.0963` | `0.0745` / `0.0093` | `61.08%` / `59.19%` | `0.8035` / `0.8571` | `228.7` / `80.3` | `12.72` / `13.53` | `410.4` / `361.4` | `12 / 69` vs. Prom |
+| **Quantinuum TKET** | `0.1091` / `0.0321` | `0.0466` / `0.0010` | `58.54%` / `58.72%` | `0.8761` / `0.9440` | `40.1` / `22.9` | `12.94` / `13.79` | `667.9` / `505.3` | `1 / 69` vs. Prom |
+| **Prometheus** | **`0.2186` / `0.1444`** | **`0.0950` / `0.0208`** | **`63.55%` / `61.98%`** | **`0.7573` / `0.8089`** | **`316.1` / `185.7`** | **`12.54` / `13.37`** | **`352.0` / `279.8`** | **`+26.31%` mean (`+50.0%` med)** |
+
+*(Full `N = 107` pooled medians: $F_B$ `0.2076` Prom vs. `0.1645` SABRE / `0.0732` TKET; $F_H$ `0.0431` vs. `0.0271` / `0.0054`; `HOP` `60.81%` vs. `57.32%` / `56.79%`; `TVD` `0.7501` vs. `0.8088` / `0.8851`; `XEB` `55.70` vs. `35.04` / `10.20`; Entropy `12.94` vs. `13.17` / `13.53`; `CZ` `317.0` vs. `351.0` / `559.0`; Depth `266.0` vs. `342.0` / `478.0`.)*
+
+![Charged Hardware Resources per Accepted Molecular-Energy Result](assets/fig0_opening_chemistry_charged_cost.png)
+*Charged IBM seconds and IQM credits per confirmed `<= 25.0 mHa` chemistry calculation across 24 held-out molecular configurations repeated three times ([`prometheus-quantum-chemistry`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-chemistry)).*
+
+### How Prometheus Works Alongside Qiskit SABRE O3 & Quantinuum TKET
+- **Evaluates candidates across compilers:** Falls back to baseline compilations whenever extra routing gates would hurt accuracy.
+- **Uses live chip calibration & topology:** Avoids defective couplers and readout hotspots across Heavy-Hex and Square lattices.
+- **Packs & stops safely:** Co-schedules compatible circuits simultaneously and stops converged shot ladders early (`0/31` false stops).
+- **Commercial scope note:** Published savings measure provider-billed QPU resources on benchmark circuits (excluding software, classical compute, and integration costs). See [`DETAILED_TECHNICAL_REPORT.md`](DETAILED_TECHNICAL_REPORT.md), [`PUBLIC_DISCLOSURE.md`](PUBLIC_DISCLOSURE.md), [`ARCHITECTURE.md`](ARCHITECTURE.md), and [`SCREENSHOT_GALLERY.md`](SCREENSHOT_GALLERY.md).
+
+</details>
