@@ -22,6 +22,7 @@ Full denominators, provider job IDs, and statistical tests for each campaign are
 | **"Can difficult circuits pass quality checks?"** | **[`prometheus-practical-execution-limits`](https://github.com/PrometheusDynamicsCanada/prometheus-practical-execution-limits)** | **10/10 fresh + 5/5 (`+32h`)** confirmed passes on IBM 15Q dense QFT and **5/5** on IQM 12Q (`0` baseline passes); reports unresolved `16Q-17Q` and `ibm_fez` limits | Raw-histogram reconstruction |
 | **"How are these coordinated on a live queue?"** | **[`prometheus-quantum-execution`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-execution)** | **More accepted requests (`30` vs. `27`) at unchanged `18 s`** on IBM, **more accepted requests (`22` vs. `12`) at unchanged efficiency/credit** on IQM, and **0/31** false early stops | Outcome-ledger, billing & statistical audit |
 | **"Does this extend beyond superconducting gates?"** | **[`prometheus-braket-validation`](https://github.com/PrometheusDynamicsCanada/prometheus-braket-validation)** | **`+3.91%` 3-window overlap** (`+6.61%` post-recalibration) on `108Q` Rigetti plus **`881` vs. `852` exact optima** (`+18.11%` yield / `-15.35%` cost/opt on hardest `12A`, `p = 0.0042`; `-40.34%` suboptimal MIS outcomes across `6/6` tasks) on `256`-atom `QuEra Aquila` | Raw-histogram & per-shot `pre`/`post_sequence` reconstruction |
+| **"How does the advantage scale with qubit count & non-local connectivity?"** | **[`prometheus-circuit-complexity-atlas`](https://github.com/PrometheusDynamicsCanada/prometheus-circuit-complexity-atlas)** | **`27/32` (`84.4%`) `#1` 3-way wins** across `6` QPUs (`1.41M` shots): **`2.35x` vs. SABRE (`-20%` to `-42.9%` cr)** on `13Q` Star (`IQM Emerald`), **`2.90x` vs. SABRE (`+85.7%` vs. TKET)** on `Rigetti Cepheus-1`, and **`1.02x -> 1.99x` vs. SABRE (`1.16x -> 30.3x` vs. TKET)** from `7Q -> 23Q` Dense `K_N` | Raw-histogram + OpenQASM statevector reconstruction |
 
 ### How Prometheus Works Alongside Existing Tools
 
@@ -33,6 +34,14 @@ Prometheus complements Qiskit SABRE, Quantinuum TKET, and cloud provider runtime
 - **Checks results against acceptance criteria:** Pairs primary runs with independent confirmation measurements and native provider billing records.
 
 *Benchmark Value vs. Commercial Opportunity:* These repositories establish measured improvements in **charged hardware resources**, throughput, and pass rates on benchmark workloads (excluding software, classical compute, and integration costs). Evaluating whether those gains transfer to a customer's specific proprietary circuits and production workflow is the goal of a bounded pilot.
+
+---
+
+## 1B. Scaling With Qubit Width & Non-Local Graph Complexity (`Star-Hub K_{1,N-1}` & `Dense All-to-All K_N`)
+
+Across `6` superconducting QPUs (`IBM Fez`, `IBM Kingston`, `IBM Marrakesh`, `IQM Emerald`, `IQM Garnet`, and `AWS Rigetti Cepheus-1`), grouping benchmarks by interaction topology and qubit width ([`prometheus-circuit-complexity-atlas`](https://github.com/PrometheusDynamicsCanada/prometheus-circuit-complexity-atlas)) shows that Prometheus's advantage is near zero on trivial `3Q-6Q` local circuits and **grows monotonically with non-local degree and qubit count** - directly addressing the `K_{1,N-1}` ancilla-fanout bottleneck of Hadamard-test / `QC-AFQMC` overlaps, `QPE`, and Pauli gadgets as well as `K_N` fermionic orbital rotations and dense `QUBO` / `QFT` subroutines:
+
+![Non-Local Connectivity and Qubit-Width Scaling Across IBM Heron, IQM Crystal and AWS Rigetti](assets/fig1_nonlocal_scaling_star_and_dense_kn.png)
 
 ---
 
@@ -55,10 +64,10 @@ Prometheus complements Qiskit SABRE, Quantinuum TKET, and cloud provider runtime
 
 ## Verify the Evidence
 
-**Reconciled Portfolio Scope (`13` Quantum Repositories):** `642` unique provider records (`633` completed benchmark jobs/tasks + `9` auxiliary records) and `20,991,160` physical measurement shots.
+**Reconciled Portfolio Scope (`14` Quantum Repositories):** `829` unique provider records (`819` completed benchmark jobs/tasks + `10` auxiliary records) and `22,398,648` (`22.40M`) physical measurement shots across `7` cloud QPUs (`6` superconducting + `256`-atom `QuEra Aquila`).
 
 Global portfolio totals are maintained exclusively in [`PORTFOLIO_ACCOUNTING_LEDGER.json`](PORTFOLIO_ACCOUNTING_LEDGER.json) (`0` cross-repository duplicate Job IDs; simulations, classical GPU runs, unrecovered queue dispatches, and two setup smoke tests excluded; multiplexed physical shots are never multiplied by packed component circuits):
-- **13 Quantum Repositories:** **`642` Unique Provider Records** = **`633` Completed Benchmark Jobs/Tasks** + `9` Auxiliary Warm-Up/Troubleshooting/Superseded Records (`369` IBM Heron [`366` bench + `3` aux], `239` IQM Resonance [`233` bench + `6` aux], `34` AWS Braket tasks [`22` superconducting `ProgramSet` + `12` `QuEra Aquila` neutral-atom `AHS`]) | **`14,212` Physical Circuits/PUBs/Schedules** | **`20,991,160` Physical Measurement Shots**.
+- **14 Quantum Repositories:** **`829` Unique Provider Records** = **`819` Completed Benchmark Jobs/Tasks** + `10` Auxiliary Warm-Up/Troubleshooting/Superseded/Cancelled Records (`475` IBM Heron [`472` bench + `3` aux], `306` IQM Resonance [`299` bench + `7` aux], `48` AWS Braket tasks [`36` superconducting `Rigetti/IQM` + `12` `QuEra Aquila` neutral-atom `AHS`]) | **`14,676` Physical Circuits/PUBs/Schedules** | **`22,398,648` Physical Measurement Shots**.
 
 ```bash
 python scripts/verify_portfolio_accounting.py
@@ -66,7 +75,7 @@ python scripts/verify_portfolio_accounting.py
 
 | # | Repository | Incremental Scope (`Jobs`, `PUBs`, `Shots`) | Focus & Verification Kind ([`PUBLIC_DISCLOSURE.md`](PUBLIC_DISCLOSURE.md)) |
 | :---: | :--- | :---: | :--- |
-| **1** | **[`prometheus-quantum-overview`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-overview)** | Hub (`0` incremental) | Portfolio overview, architecture ([`ARCHITECTURE.md`](ARCHITECTURE.md)), & **642-ID deduplication verifier** (`scripts/verify_portfolio_accounting.py`) |
+| **1** | **[`prometheus-quantum-overview`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-overview)** | Hub (`0` incremental) | Portfolio overview, architecture ([`ARCHITECTURE.md`](ARCHITECTURE.md)), & **829-ID deduplication verifier** (`scripts/verify_portfolio_accounting.py`) |
 | **2** | **[`prometheus-quantum-chemistry`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-chemistry)** | `172` jobs · `4,812` PUBs · `3,756,032` shots | Lower charged QPU cost per confirmed `<= 25 mHa` chemistry result · **Outcome-ledger, billing & 42-trajectory SPSA replay audit** |
 | **3** | **[`prometheus-practical-execution-limits`](https://github.com/PrometheusDynamicsCanada/prometheus-practical-execution-limits)** | `24` jobs · `1,648` PUBs · `1,687,552` shots | Repeated dense pass-vs-fail boundaries across processors & `+32h` (`129` unique workloads) · **Raw-histogram reconstruction (`numpy`)** |
 | **4** | **[`prometheus-quantum-execution`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-execution)** | `157` rec (`149` bench) · `2,509` PUBs · `2,093,568` shots | Queue management, separated IBM/IQM economics & live shot stopping (`0/31` false stops) · **Outcome-ledger, billing & CRVE audit** |
@@ -79,6 +88,7 @@ python scripts/verify_portfolio_accounting.py
 | **11** | **[`prometheus-noise-aware-routing`](https://github.com/PrometheusDynamicsCanada/prometheus-noise-aware-routing)** | `14` jobs · `774` PUBs · `4,125,440` shots | Exploratory routing studies: `30/40` wins, `10/40` SWAP-overhead losses, distribution shifts · **Raw Qiskit `BitArray` reconstruction** |
 | **12** | **[`prometheus-quantum-and-gpu-benchmarks`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-and-gpu-benchmarks)** | `119` QPU jobs · `357` circs · `5,084,160` shots | `107` IBM + `12` Braket QPU jobs archived alongside `150` separate classical H100 QUBO runs · **Outcome-ledger & schedule feasibility audit** |
 | **13** | **[`prometheus-quality-gated-packing`](https://github.com/PrometheusDynamicsCanada/prometheus-quality-gated-packing)** | `29` rec (`28` bench) · `121` PUBs · `186,368` shots | 3-campaign quality-gated `4-way` vs. `8-way` `ABCCBA` (`-10.0%` s/acc near floor) & 4-family packing (`-54.55%` s/acc) · **Raw-histogram reconstruction (`numpy`)** |
+| **14** | **[`prometheus-circuit-complexity-atlas`](https://github.com/PrometheusDynamicsCanada/prometheus-circuit-complexity-atlas)** | `187` rec (`186` bench) · `464` PUBs · `1,407,488` shots | Common-denominator complexity & width scaling (`3Q-17Q` Star-Hub, Chemistry, Simultaneous 5-QPU Matrix; `27/32` `#1` wins) · **Raw-histogram + OpenQASM statevector reconstruction** |
 
 *(Standalone Non-Quantum Product: [`argus-server-protection`](https://github.com/PrometheusDynamicsCanada/argus-server-protection) documents Linux connection-flood protection and is independent of the quantum portfolio.)*
 
