@@ -1,15 +1,15 @@
 {
   "schema_version": "1.0.0",
   "title": "Prometheus Dynamics Quantum Execution Portfolio - Authoritative Cross-Repository Accounting & Job-ID Deduplication Ledger",
-  "scope_note": "Single authoritative accounting source across all 14 quantum repositories under PrometheusDynamicsCanada (excluding standalone Linux XDP security repository argus-server-protection, fusion repository Hyperion-fusion-telemetry, classical NVIDIA H100 GPU runs, simulations, unrecovered queue dispatches, and setup smoke tests). Every hardware Job ID / AWS Braket Task ARN is counted exactly once (829 unique records = 819 completed benchmark jobs/tasks + 10 auxiliary records).",
+  "scope_note": "Single authoritative accounting source across all 14 quantum repositories under PrometheusDynamicsCanada (excluding standalone Linux XDP security repository argus-server-protection, fusion repository Hyperion-fusion-telemetry, classical NVIDIA H100 GPU runs, simulations, unrecovered queue dispatches, and setup smoke tests). Every hardware Job ID / AWS Braket Task ARN is counted exactly once (867 unique records = 857 completed benchmark jobs/tasks + 10 auxiliary records).",
   "portfolio_totals": {
     "quantum_repositories_total": 14,
-    "unique_provider_records": 829,
-    "completed_benchmark_jobs_or_tasks": 819,
+    "unique_provider_records": 867,
+    "completed_benchmark_jobs_or_tasks": 857,
     "auxiliary_warmup_or_troubleshooting_records": 10,
     "ibm_quantum_records": {
-      "total": 475,
-      "benchmark_jobs": 472,
+      "total": 481,
+      "benchmark_jobs": 478,
       "auxiliary_records": 3
     },
     "aws_braket_programset_tasks": {
@@ -20,12 +20,12 @@
       "neutral_atom_ahs_tasks": 12
     },
     "iqm_resonance_records": {
-      "total": 306,
-      "benchmark_jobs": 299,
+      "total": 338,
+      "benchmark_jobs": 331,
       "auxiliary_records": 7
     },
-    "physical_circuits_or_pubs": 14676,
-    "physical_measurement_shots": 22398648
+    "physical_circuits_or_pubs": 14920,
+    "physical_measurement_shots": 22773432
   },
   "matched_107_job_ibm_compiler_corpus_summary": {
     "source_repository": "prometheus-quantum-and-gpu-benchmarks",
@@ -1825,13 +1825,13 @@
     },
     {
       "repository": "prometheus-circuit-complexity-atlas",
-      "role": "Cross-Cloud Circuit Complexity & Qubit-Width Scaling Atlas (32 live 3-compiler benchmark groups across 6 superconducting QPUs: IBM Fez, Kingston, Marrakesh, IQM Emerald, IQM Garnet, and AWS Rigetti Cepheus-1-108Q; 3Q-17Q Star-Hub, Chemistry, and Multi-Family batches)",
-      "verification_tier": "Raw bitstring histograms & unrouted OpenQASM 2.0 statevector overlap recomputation across all 32 three-way benchmark groups (186 completed benchmark cloud jobs/tasks + 1 cancelled auxiliary IQM job = 187 unique provider records, 464 PUBs, 1,407,488 physical shots; shared 69-job Dense K_N scaling curve counted in prometheus-quantum-and-gpu-benchmarks)",
-      "incremental_provider_records": 187,
-      "incremental_benchmark_jobs": 186,
+      "role": "Cross-Cloud Circuit Complexity, Active-Space Chemistry & Qubit-Width Scaling Atlas (38 live 3-compiler benchmark groups across 6 superconducting QPUs: IBM Fez, Kingston, Marrakesh, IQM Emerald, IQM Garnet, and AWS Rigetti Cepheus-1-108Q; 3Q-17Q Star-Hub, 4Q H2 / 6Q LiH / 8Q Linear H4 Chemistry, 10Q QC-AFQMC Matchgate, and Multi-Family batches)",
+      "verification_tier": "Raw bitstring histograms & unrouted OpenQASM 2.0 statevector overlap recomputation across all 38 three-way benchmark groups plus 1 standalone 2-way packed Matchgate companion run (224 completed benchmark cloud jobs/tasks + 1 cancelled auxiliary IQM job = 225 unique provider records, 708 PUBs, 1,782,272 physical shots; shared 69-job Dense K_N scaling curve counted in prometheus-quantum-and-gpu-benchmarks)",
+      "incremental_provider_records": 225,
+      "incremental_benchmark_jobs": 224,
       "incremental_auxiliary_records": 1,
-      "incremental_physical_pubs": 464,
-      "incremental_physical_shots": 1407488,
+      "incremental_physical_pubs": 708,
+      "incremental_physical_shots": 1782272,
       "unique_provider_ids": [
         "01a1f5e1-db66-7245-9aff-f8c80e4da662",
         "01a1f6ed-8405-778d-80be-4794a86a7b24",
@@ -2019,7 +2019,45 @@
         "01a20701-85a3-7148-85a9-e782b47ddc2e",
         "01a20701-aef0-72aa-8a58-c893eb89e9e9",
         "01a20701-9d38-712d-89ea-c87790c6e2c8",
-        "01a20701-bb5d-73e4-b2b7-1ef37925860b"
+        "01a20701-bb5d-73e4-b2b7-1ef37925860b",
+        "01a20912-9b65-7735-ab02-33038ea577e5",
+        "01a20913-4c59-741a-85b4-1d8b46a39547",
+        "01a20912-b804-77b5-a475-a373de3a0f4a",
+        "01a20913-5bdc-72c4-bb51-53d2ad8dad4c",
+        "01a20912-e07b-763e-bccd-80187985aa87",
+        "01a20913-9ff9-71ea-b3af-f15323fc4ada",
+        "01a2094e-6614-77a0-9cb3-6a5d08cded04",
+        "01a2094e-d391-7635-9840-83fb6accd97c",
+        "01a2094e-b1a6-70da-b8ba-74abe5c032c5",
+        "01a2094f-5e04-7539-872a-75be3d7cc44a",
+        "01a2094e-b023-740e-8a6c-7b07f3f2f9a4",
+        "01a2094f-4943-707a-aa26-b3604d4a5c85",
+        "01a2094e-e5d3-774e-ae2b-d2d72b2fb722",
+        "01a2094f-9369-7575-9e6f-bee7b720b5d7",
+        "dc27p2ls2omc738bhqfg",
+        "dc27p6qnj2vs73dg9hh0",
+        "dc27p36q4uuc73a4s5i0",
+        "dc27p8qnj2vs73dg9hng",
+        "dc27p2inj2vs73dg9hbg",
+        "dc27p7lhdvas73blp2hg",
+        "01a20986-9081-7763-b4c0-08a4c01062ce",
+        "01a209c1-22ee-703b-8b19-bad5d1bed319",
+        "01a20987-4920-73a9-b145-88ab7db52701",
+        "01a209c2-c933-748b-a95e-75c619cc6aa8",
+        "01a20987-4cdd-7373-b73d-12a1c293188d",
+        "01a209c2-e2ef-7466-ac18-e70aa8240962",
+        "01a20ca1-d856-73e9-b997-c555bac5ec07",
+        "01a20ca5-d4d3-732c-8987-318df9ef3165",
+        "01a20ca1-e538-7488-9275-4810a293e834",
+        "01a20ca5-fa3a-71cb-8979-c667187bdc95",
+        "01a20ca2-0523-7134-9455-547eedfb4228",
+        "01a20ca6-0ac8-72a9-93a1-941a14dac872",
+        "01a20cad-39f1-72d6-a943-67c03354db19",
+        "01a20cb2-4358-75f8-8428-c949f0f447e0",
+        "01a20cad-4d20-7796-b43c-a0730c72a9cc",
+        "01a20cb2-54d6-73a2-81ed-005b30efe3b9",
+        "01a20cad-6b15-70df-9244-384b98624646",
+        "01a20cb2-6aed-70bd-a8cb-e61c7c21bf9c"
       ],
       "shared_reference_ids_counted_elsewhere": {
         "counted_in_prometheus-quantum-and-gpu-benchmarks": [

@@ -1,6 +1,6 @@
 # Public Disclosure, Verification Tiers & Portfolio Scope
 
-This portfolio hub ([`prometheus-quantum-overview`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-overview)) indexes the 13 public quantum execution repositories published by Prometheus Dynamics Canada (`642` unique provider QPU Job/Task records across IBM Quantum, AWS Braket, and IQM Resonance; see [`PORTFOLIO_ACCOUNTING_LEDGER.json`](PORTFOLIO_ACCOUNTING_LEDGER.json) and `python scripts/verify_portfolio_accounting.py`).
+This portfolio hub ([`prometheus-quantum-overview`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-overview)) indexes the 14 public quantum execution repositories published by Prometheus Dynamics Canada (`867` unique provider QPU Job/Task records across IBM Quantum, AWS Braket, and IQM Resonance; see [`PORTFOLIO_ACCOUNTING_LEDGER.json`](PORTFOLIO_ACCOUNTING_LEDGER.json) and `python scripts/verify_portfolio_accounting.py`).
 
 ## 1. Five Verification Tiers Across the Public Portfolio
 
@@ -8,6 +8,7 @@ Different repositories archive different levels of primary artifacts depending o
 
 1. **Raw Measurement Histogram / `BitArray` Payload Reconstruction:**
    - Repositories archiving returned shot histograms or Qiskit `SamplerV2` `BitArray` payloads allow independent offline reconstruction of output probability distributions, Classical Bhattacharyya Overlap (`F_B`), Squared Hellinger Fidelity (`F_H = F_B²`), Total Variation Distance (`TVD`), task-specific observables, and (where physical OpenQASM circuits are included) compiled gate counts and depths:
+     - [`prometheus-circuit-complexity-atlas`](https://github.com/PrometheusDynamicsCanada/prometheus-circuit-complexity-atlas) (`225` unique provider records [`224` benchmark + `1` auxiliary], `708` PUBs, `1,782,272` shots across `38` three-compiler groups + `1` packed companion, raw bitstring histograms + unrouted OpenQASM 2.0 + standalone `numpy/qiskit` verifier)
      - [`prometheus-practical-execution-limits`](https://github.com/PrometheusDynamicsCanada/prometheus-practical-execution-limits) (`1,648` physical PUBs across `24` QPU jobs and `129` unique logical workloads, raw bitstring histograms + unrouted OpenQASM 2.0 + standalone `numpy` verifier)
      - [`prometheus-quality-gated-packing`](https://github.com/PrometheusDynamicsCanada/prometheus-quality-gated-packing) (`112` logical evaluations across `29` provider records [`28` benchmark + `1` auxiliary], `121` PUBs, `186,368` shots, raw bitstring histograms + unrouted OpenQASM 2.0 + standalone `numpy` verifier)
      - [`prometheus-braket-validation`](https://github.com/PrometheusDynamicsCanada/prometheus-braket-validation) (`450` Rigetti circuits with raw shot counts + compiled QASM, plus `12` `QuEra Aquila` neutral-atom tasks with `3,000` raw `pre_sequence` / `post_sequence` Rb-87 shots)
