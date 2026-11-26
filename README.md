@@ -7,14 +7,14 @@
 ## Introduction
 
 - **The question:** Can software improve result quality and lower provider-billed hardware spend on today's cloud quantum processors without changing a team's underlying algorithm?
-- **The test:** Across `14` public quantum repositories (`867` unique cloud records: `857` completed benchmark jobs/tasks + `10` auxiliary records, `14,920` PUBs/schedules, `22.77M` physical shots, `0` duplicate IDs), we compared Prometheus against Qiskit SABRE O3 and Quantinuum TKET on `6` superconducting gate-model processors (`IBM Fez`, `Kingston`, `Marrakesh`, `IQM Emerald`, `IQM Garnet`, `Rigetti Cepheus-1-108Q`), plus `11-13`-atom instances on the `256`-atom `QuEra Aquila` neutral-atom analog device.
+- **The test:** Across `15` public quantum repositories (`1,081` unique cloud records: `1,069` completed benchmark jobs/tasks + `12` auxiliary records, `15,912` PUBs/schedules, `24.64M` physical shots, `0` duplicate IDs), we compared Prometheus against Qiskit SABRE O3 and Quantinuum TKET on `6` superconducting gate-model processors (`IBM Fez`, `Kingston`, `Marrakesh`, `IQM Emerald`, `IQM Garnet`, `Rigetti Cepheus-1-108Q`), plus `11-13`-atom instances on the `256`-atom `QuEra Aquila` neutral-atom analog device.
 - **The finding:** Prometheus cut billed QPU resources per confirmed molecular-energy calculation by **`52%` to `60%` vs. the best baseline**, delivered up to **`3.00x` qualifying workloads per billed unit** via simultaneous multi-circuit execution, and passed **`10/10` fresh + `5/5` (`+32h`)** `15`-qubit dense QFT checks where both baselines passed `0`.
 - **The significance:** Teams can stretch finite IBM second, IQM credit, and AWS Braket budgets further while keeping wider, heavily connected circuits above quality thresholds.
 - **The boundary:** On small, lightly connected circuits (`3Q-6Q` local chains), standard compilers perform near parity; baseline wins (`27/107` on the historical IBM corpus, `6/36` in the multi-cloud atlas) and unresolved `16Q-17Q` limits are published openly.
 - **The evidence:** Simplified opening chart and compact summary tables below, backed by [`PORTFOLIO_ACCOUNTING_LEDGER.json`](PORTFOLIO_ACCOUNTING_LEDGER.json), [`DETAILED_TECHNICAL_REPORT.md`](DETAILED_TECHNICAL_REPORT.md), and offline verification scripts.
 
-### What Changed (`2026-11-24` Release `v2026.11.24`)
-- Expanded Repository `#14` ([`prometheus-circuit-complexity-atlas`](https://github.com/PrometheusDynamicsCanada/prometheus-circuit-complexity-atlas)) from `187 -> 225` unique cloud records (`32 -> 38` 3-compiler groups, `708` PUBs, `1.78M` shots), adding correlated `8Q Linear H4 STO-3G CAS(4e,4o)` `1-way` (`58.17 mHa` confirmed `H4 1.00 A`, `-33.8%` to `-36.9%` vs. TKET) and back-to-back `3-way` spatial packing (`8.25 cr` vs. `10.50 cr` SABRE, `-21.4%`) on `IQM Emerald`, plus `10Q QC-AFQMC Matchgate` cross-processor `IBM Kingston` (`4/4 PASS`, `0.8052`) vs. `IQM Emerald` runs. Reconciled portfolio totals rose from `829 -> 867` unique records (`22.40M -> 22.77M` shots, `0` duplicates).
+### What Changed (`2026-11-26` Release `v2026.11.26`)
+- Added Repository `#15` ([`prometheus-iqm-validation-campaign`](https://github.com/PrometheusDynamicsCanada/prometheus-iqm-validation-campaign)) (`214` unique IQM Resonance records = `212` completed QPU jobs + `2` unbilled `0.00`-credit operational records, `992` PUBs, `1,865,728` physical shots across `54Q` `IQM Emerald` and `20Q` `IQM Garnet`, `0.0000` credit discrepancy): led by the preregistered **`84`-job `6Q-11Q` Seven-Family Sweep on `IQM Garnet`** (`336` circuit executions: `#1` $F_B = 0.7609$ vs. `0.7546` `IQM-Supported Qiskit` [`+0.83%`] and `0.7267` `Qiskit VF2 O3`/`SABRE O3` [`+4.71%`], `23/42` observed cell rankings, `5/7` family averages, `+17.0%` Forward QFT peak mass, `#1` QAOA `<C>` across all `6` widths `6Q-11Q`, `-5.23%` to `-8.99%` `CZ`), **two-window equal-opportunity `4-Way` spatial packing** (`#1` `6Q` $F_B = 0.8863$, `8/8` passes, tied-lowest `3.00 cr` [`-75.0%` vs. `12.00 cr` unpacked]), and **full-Hamiltonian `4Q H2` (`4.016 mHa` `5-Way` packed) & `6Q LiH` (`88.996 mHa` raw)** chemistry. Reconciled portfolio totals rose from `867 -> 1,081` unique records (`22.77M -> 24.64M` shots, `0` duplicates).
 
 ![As non-local circuits widen, Prometheus retains higher output-distribution agreement](assets/fig0_simple_scaling_absolute_and_gain.png)
 *Opening summary: Absolute output-distribution agreement (`0` to `1.0`) and `%` change strictly vs. Best Baseline (`max(SABRE O3, TKET)`) across `3Q-13Q` Central-Hub Star and `7Q-23Q` Dense All-to-All circuits (`N = 69` completed 3-way IBM Heron jobs).*
@@ -28,7 +28,7 @@
 | **Can I spend less per chemistry result?** | **`52%-60%` fewer** billed IBM seconds & IQM credits vs. best baseline per confirmed `<= 25 mHa` energy (`172` jobs) | [`prometheus-quantum-chemistry`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-chemistry) |
 | **Can I get more work per processor unit?** | **`3.00x`** qualifying results/IQM credit, **`2.85x`/IBM s**, and **`-54.55%` IBM s/accepted** (4 families) | [`prometheus-quality-gated-packing`](https://github.com/PrometheusDynamicsCanada/prometheus-quality-gated-packing) · [`prometheus-iqm-execution`](https://github.com/PrometheusDynamicsCanada/prometheus-iqm-execution) |
 | **Can demanding circuits pass quality checks?** | **`10/10` fresh + `5/5` (`+32h`)** `15Q` IBM QFT passes & **`5/5`** `12Q` IQM passes (`0` baseline passes) | [`prometheus-practical-execution-limits`](https://github.com/PrometheusDynamicsCanada/prometheus-practical-execution-limits) |
-| **How does quality change as circuits widen?** | **`30/36` (`83.3%`)** completed 3-way wins (`32/38` incl. `2` halts); **`+9.04%`** (`-20.0%` cr) on `13Q` Emerald, **`+85.7%`** on `7Q` Cepheus-1, & **`-33.8%` to `-36.9%`** `8Q H4` error (`-21.4%` `3w` cr) vs. best baseline | [`prometheus-circuit-complexity-atlas`](https://github.com/PrometheusDynamicsCanada/prometheus-circuit-complexity-atlas) |
+| **How does quality change as circuits widen?** | **`#1` $F_B = 0.7609$** (`23/42` cells, `5/7` families, `6/6` QAOA widths) in `84`-job `6Q-11Q` IQM Garnet sweep + **`30/36` (`83.3%`)** 3-way multi-cloud wins (`-33.8%` to `-36.9%` `8Q H4` error) | [`prometheus-iqm-validation-campaign`](https://github.com/PrometheusDynamicsCanada/prometheus-iqm-validation-campaign) · [`prometheus-circuit-complexity-atlas`](https://github.com/PrometheusDynamicsCanada/prometheus-circuit-complexity-atlas) |
 | **How does automated queue & stopping behave?** | **`30/36` vs. `27/36`** accepted at `18 s` (IBM), **`22/36` vs. `12/36`** (IQM), **`0/31`** false early stops | [`prometheus-quantum-execution`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-execution) |
 | **Does it extend to Rigetti & neutral atoms?** | **`+6.61%`** post-recal on `108Q` Rigetti + **`+18.11%`** `12`-atom optimum yield (`p = 0.0042`) on `256`-atom QuEra Aquila | [`prometheus-braket-validation`](https://github.com/PrometheusDynamicsCanada/prometheus-braket-validation) |
 
@@ -49,21 +49,21 @@
 ## Inspect the Evidence & Reproduce Supported Checks Offline
 
 - **Command:** `python scripts/verify_portfolio_accounting.py`
-- **Dependencies & measured runtime:** Python 3 standard library only (`0` cloud credentials, **`~0.06 s`** measured runtime; verifies `867/867` unique IDs, `0` cross-repo duplicates, `107`-job raw corpus arithmetic, and `38/38` SHA-256 digests).
+- **Dependencies & measured runtime:** Python 3 standard library only (`0` cloud credentials, **`~0.06 s`** measured runtime; verifies `1,081/1,081` unique IDs, `0` cross-repo duplicates, `107`-job raw corpus arithmetic, and `38/38` SHA-256 digests).
 - **Start a pilot or investor briefing:** [william@prometheusdynamics.ca](mailto:william@prometheusdynamics.ca) | [prometheusdynamics.ca](https://prometheusdynamics.ca)
 
 ---
 
-## Deep-Dive Tables, Scientific Figures & All 14 Quantum Repositories
+## Deep-Dive Tables, Scientific Figures & All 15 Quantum Repositories
 
 <details>
-<summary><strong>1. Complete Directory of All 14 Quantum Repositories (867 Unique Cloud Records · 22.77M Shots) - Click to expand</strong></summary>
+<summary><strong>1. Complete Directory of All 15 Quantum Repositories (1,081 Unique Cloud Records · 24.64M Shots) - Click to expand</strong></summary>
 
-Global portfolio totals are maintained in [`PORTFOLIO_ACCOUNTING_LEDGER.json`](PORTFOLIO_ACCOUNTING_LEDGER.json) (`867` unique provider records = `857` completed benchmark jobs/tasks + `10` auxiliary records across `481` IBM Quantum, `338` IQM Resonance, and `48` AWS Braket tasks [`36` superconducting `Rigetti/IQM` + `12` `256`-atom `QuEra Aquila` analog `AHS` tasks]; `14,920` PUBs/schedules; `22,773,432` physical shots; `0` duplicates):
+Global portfolio totals are maintained in [`PORTFOLIO_ACCOUNTING_LEDGER.json`](PORTFOLIO_ACCOUNTING_LEDGER.json) (`1,081` unique provider records = `1,069` completed benchmark jobs/tasks + `12` auxiliary records across `481` IBM Quantum, `552` IQM Resonance, and `48` AWS Braket tasks [`36` superconducting `Rigetti/IQM` + `12` `256`-atom `QuEra Aquila` analog `AHS` tasks]; `15,912` PUBs/schedules; `24,639,160` physical shots; `0` duplicates):
 
 | # | Repository | Incremental Scope (`Jobs`, `PUBs`, `Shots`) | Focus, Dependencies & Measured Verifier Runtime |
 | :---: | :--- | :---: | :--- |
-| **1** | **[`prometheus-quantum-overview`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-overview)** | Hub (`0` incremental) | Portfolio hub, [`ARCHITECTURE.md`](ARCHITECTURE.md), & 867-ID deduplication (`stdlib` · **`0.06 s`**) |
+| **1** | **[`prometheus-quantum-overview`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-overview)** | Hub (`0` incremental) | Portfolio hub, [`ARCHITECTURE.md`](ARCHITECTURE.md), & 1,081-ID deduplication (`stdlib` · **`0.06 s`**) |
 | **2** | **[`prometheus-quantum-chemistry`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-chemistry)** | `172` jobs · `4,812` PUBs · `3,756,032` shots | `-52%` to `-60%` QPU cost vs. best baseline per confirmed `<= 25 mHa` calc (`numpy, scipy` · **`0.80 s`**) |
 | **3** | **[`prometheus-practical-execution-limits`](https://github.com/PrometheusDynamicsCanada/prometheus-practical-execution-limits)** | `24` jobs · `1,648` PUBs · `1,687,552` shots | `10/10` fresh + `5/5` (`+32h`) `15Q` QFT passes + boundaries (`numpy` · **`80.6 s`**) |
 | **4** | **[`prometheus-quantum-execution`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-execution)** | `157` rec (`149` bench) · `2,509` PUBs · `2,093,568` shots | Queue management & sequential stopping (`0/31` false stops) (`numpy, scipy` · **`0.75 s`**) |
@@ -77,6 +77,7 @@ Global portfolio totals are maintained in [`PORTFOLIO_ACCOUNTING_LEDGER.json`](P
 | **12** | **[`prometheus-quantum-and-gpu-benchmarks`](https://github.com/PrometheusDynamicsCanada/prometheus-quantum-and-gpu-benchmarks)** | `119` QPU jobs · `357` circs · `5,084,160` shots | `107` IBM + `12` Braket QPU jobs + separate `150`-run H100 study (`stdlib` · **`0.04 s`**) |
 | **13** | **[`prometheus-quality-gated-packing`](https://github.com/PrometheusDynamicsCanada/prometheus-quality-gated-packing)** | `29` rec (`28` bench) · `121` PUBs · `186,368` shots | `-54.55%` IBM s/acc (4 families) & `ABCCBA` `4-way` vs. `8-way` (`numpy` · **`0.15 s`**) |
 | **14** | **[`prometheus-circuit-complexity-atlas`](https://github.com/PrometheusDynamicsCanada/prometheus-circuit-complexity-atlas)** | `225` rec (`224` bench) · `708` PUBs · `1,782,272` shots | `3Q-17Q` Star-Hub, `H2/LiH/H4` Chemistry, `10Q` Matchgate & `5`-QPU Matrix (`numpy, qiskit` · **`1.29 s`**) |
+| **15** | **[`prometheus-iqm-validation-campaign`](https://github.com/PrometheusDynamicsCanada/prometheus-iqm-validation-campaign)** | `214` rec (`212` bench) · `992` PUBs · `1,865,728` shots | `84`-job `6Q-11Q` `7`-family Garnet sweep + equal `4-way` packing & `H2/LiH` (`numpy` · **`0.68 s`**) |
 
 *(Adjacent non-quantum repositories: [`argus-server-protection`](https://github.com/PrometheusDynamicsCanada/argus-server-protection) [`stdlib` · `0.06 s`] and [`Hyperion-fusion-telemetry`](https://github.com/PrometheusDynamicsCanada/Hyperion-fusion-telemetry) [`numpy, pandas` · `0.45 s`].)*
 

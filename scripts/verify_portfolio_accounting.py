@@ -2,7 +2,7 @@
 """
 Standalone offline verifier for `prometheus-quantum-overview`:
 1. Audits `PORTFOLIO_ACCOUNTING_LEDGER.json` arithmetic and verifies that all
-   867 provider Job IDs / AWS Braket Task ARNs across all 14 quantum repositories
+   1,081 provider Job IDs / AWS Braket Task ARNs across all 15 quantum repositories
    are strictly unique (zero cross-campaign duplicates), with shared reference suites
    (`prometheus-processor-selection` 33 ZIPs and the 4-job 144-execution suite)
    explicitly cross-mapped and counted once.
@@ -32,7 +32,7 @@ def main() -> None:
 
     totals = ledger["portfolio_totals"]
     repos = ledger["constituent_repositories"]
-    assert len(repos) == totals["quantum_repositories_total"] == 14
+    assert len(repos) == totals["quantum_repositories_total"] == 15
 
     rec_sum = sum(int(r["incremental_provider_records"]) for r in repos)
     bench_sum = sum(int(r["incremental_benchmark_jobs"]) for r in repos)
@@ -40,12 +40,12 @@ def main() -> None:
     pub_sum = sum(int(r["incremental_physical_pubs"]) for r in repos)
     shot_sum = sum(int(r["incremental_physical_shots"]) for r in repos)
 
-    assert rec_sum == totals["unique_provider_records"] == 867
-    assert bench_sum == totals["completed_benchmark_jobs_or_tasks"] == 857
-    assert aux_sum == totals["auxiliary_warmup_or_troubleshooting_records"] == 10
+    assert rec_sum == totals["unique_provider_records"] == 1081
+    assert bench_sum == totals["completed_benchmark_jobs_or_tasks"] == 1069
+    assert aux_sum == totals["auxiliary_warmup_or_troubleshooting_records"] == 12
     assert bench_sum + aux_sum == rec_sum
-    assert pub_sum == totals["physical_circuits_or_pubs"] == 14920
-    assert shot_sum == totals["physical_measurement_shots"] == 22773432
+    assert pub_sum == totals["physical_circuits_or_pubs"] == 15912
+    assert shot_sum == totals["physical_measurement_shots"] == 24639160
 
     # Provider-family breakdown
     p_ibm = totals["ibm_quantum_records"]
@@ -54,10 +54,10 @@ def main() -> None:
     assert p_ibm["total"] == 481 and p_ibm["benchmark_jobs"] == 478 and p_ibm["auxiliary_records"] == 3
     assert p_aws["total"] == 48 and p_aws["benchmark_tasks"] == 48 and p_aws["auxiliary_records"] == 0
     assert p_aws["superconducting_programset_tasks"] + p_aws["neutral_atom_ahs_tasks"] == 48
-    assert p_iqm["total"] == 338 and p_iqm["benchmark_jobs"] == 331 and p_iqm["auxiliary_records"] == 7
-    assert p_ibm["total"] + p_aws["total"] + p_iqm["total"] == 867
-    assert p_ibm["benchmark_jobs"] + p_aws["benchmark_tasks"] + p_iqm["benchmark_jobs"] == 857
-    assert p_ibm["auxiliary_records"] + p_aws["auxiliary_records"] + p_iqm["auxiliary_records"] == 10
+    assert p_iqm["total"] == 552 and p_iqm["benchmark_jobs"] == 543 and p_iqm["auxiliary_records"] == 9
+    assert p_ibm["total"] + p_aws["total"] + p_iqm["total"] == 1081
+    assert p_ibm["benchmark_jobs"] + p_aws["benchmark_tasks"] + p_iqm["benchmark_jobs"] == 1069
+    assert p_ibm["auxiliary_records"] + p_aws["auxiliary_records"] + p_iqm["auxiliary_records"] == 12
 
     # Strict cross-repository deduplication check across all 642 IDs
     all_ids = []
@@ -71,7 +71,7 @@ def main() -> None:
         by_repo[r["repository"]] = set(uids)
         all_ids.extend(uids)
 
-    assert len(all_ids) == 867 and len(set(all_ids)) == 867, (
+    assert len(all_ids) == 1081 and len(set(all_ids)) == 1081, (
         f"Cross-repository duplicate Job ID detected: {len(all_ids)} total vs {len(set(all_ids))} unique"
     )
 
@@ -209,11 +209,24 @@ def main() -> None:
         assert {r["hardware_job_id"] for r in at_rows} == by_repo["prometheus-circuit-complexity-atlas"]
         verified_atlas_sibling = True
 
+    sibling_iqm_camp = root.parent / "prometheus-iqm-validation-campaign" / "data" / "ALL_214_IQM_CAMPAIGN_JOBS_LEDGER.csv"
+    verified_iqm_camp_sibling = False
+    if sibling_iqm_camp.is_file():
+        ic_rows = list(csv.DictReader(sibling_iqm_camp.open("r", encoding="utf-8")))
+        assert len(ic_rows) == 214
+        ic_bench = [r for r in ic_rows if r["record_role"] == "benchmark"]
+        assert len(ic_bench) == 212
+        assert sum(int(r["physical_pubs"]) for r in ic_rows) == 992
+        assert sum(int(r["physical_shots"]) for r in ic_rows) == 1865728
+        assert abs(sum(float(r["confirmed_credits"]) for r in ic_rows) - 605.00) < 1e-6
+        assert {r["hardware_job_id"] for r in ic_rows} == by_repo["prometheus-iqm-validation-campaign"]
+        verified_iqm_camp_sibling = True
+
     print("=" * 92)
     print("PORTFOLIO ACCOUNTING & CROSS-REPOSITORY JOB-ID DEDUPLICATION AUDIT")
     print("=" * 92)
     print(f"  [PASS] Quantum Repositories Indexed      : {len(repos)}")
-    print(f"  [PASS] Unique Provider Records Verified  : {len(set(all_ids))} / 867 (0 duplicates; {bench_sum} bench + {aux_sum} aux)")
+    print(f"  [PASS] Unique Provider Records Verified  : {len(set(all_ids))} / 1,081 (0 duplicates; {bench_sum} bench + {aux_sum} aux)")
     print(f"  [PASS] Physical Circuits / PUBs Verified : {pub_sum:,d}")
     print(f"  [PASS] Physical Shots Verified           : {shot_sum:,d}")
     raw_tag = " + raw sibling JSON recomputed" if recomputed_from_raw else ""
@@ -226,6 +239,8 @@ def main() -> None:
         print("  [PASS] Braket Two-Arch Cross-Check       : 22 / 22 Task ARNs (10 Rigetti + 12 QuEra Aquila), 462 runs, 463,800 shots")
     if verified_atlas_sibling:
         print("  [PASS] Complexity Atlas Sibling Check    : 225 / 225 Cloud IDs (224 bench + 1 aux), 708 PUBs, 1,782,272 shots")
+    if verified_iqm_camp_sibling:
+        print("  [PASS] IQM Validation Campaign Check     : 214 / 214 IQM UUIDs (212 bench + 2 aux), 992 PUBs, 1,865,728 shots, 605.00 cr")
 
     manifest_path = root / "REPO_SHA256_MANIFEST.json"
     if manifest_path.exists():
