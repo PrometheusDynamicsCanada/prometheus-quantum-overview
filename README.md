@@ -1,26 +1,24 @@
 # Prometheus Quantum: Verified Hardware Overview
 
-**Prometheus is execution software that helps teams run gate-based quantum circuits more accurately and at lower billed hardware cost across IBM, IQM, and Rigetti cloud processors (alongside a separate neutral-atom analog study on 256-atom QuEra Aquila).**
+*Portfolio Hub: 15 Quantum Repositories (17 Study Repositories Overall) · [Browse Evidence Directory](https://prometheusdynamics.ca/evidence/) · [Quantum Product Page](https://prometheusdynamics.ca/quantum/)*
 
-**[Launch QuantumCompiler (`10` Free Jobs)](https://prometheusdynamics.ca/quantumcompiler) · [Explore Case Studies](https://prometheusdynamics.ca/evidence/) · [Discuss a Pilot or Investment](https://prometheusdynamics.ca/quantum/#pilot-and-investors)**
+Today's quantum processors lose accuracy as circuits grow wider, and running small circuits one at a time leaves most of a paid chip idle. We tested whether Prometheus software can improve output quality and reduce billed hardware usage across cloud quantum computers without changing a customer's underlying algorithm.
 
-## Introduction
+Across 1,069 completed benchmark jobs and tasks (1,081 total cloud provider records and 24.64 million measurement shots, with zero duplicate IDs across 15 quantum repositories), Prometheus reduced billed QPU time and credits per confirmed molecular-energy calculation by 52% to 60% versus the strongest tested baseline, delivered up to 3.0x qualifying results per billed unit when packing small circuits together, led an 84-job 6-to-11-qubit seven-family sweep on IQM Garnet (0.7609 average output agreement and #1 QAOA cut value at every tested width), and passed all 10 fresh and all 5 repeated (+32h) 15-qubit QFT checks on IBM Marrakesh where both baselines passed none.
 
-- **The question:** Can software improve result quality and lower provider-billed hardware spend on today's cloud quantum processors without changing a team's underlying algorithm?
-- **The test:** Across `15` public quantum repositories (`1,081` unique cloud records: `1,069` completed benchmark jobs/tasks + `12` auxiliary records, `15,912` PUBs/schedules, `24.64M` physical shots, `0` duplicate IDs), we compared Prometheus against Qiskit SABRE O3 and Quantinuum TKET on `6` superconducting gate-model processors (`IBM Fez`, `Kingston`, `Marrakesh`, `IQM Emerald`, `IQM Garnet`, `Rigetti Cepheus-1-108Q`), plus `11-13`-atom instances on the `256`-atom `QuEra Aquila` neutral-atom analog device.
-- **The finding:** Prometheus cut billed QPU resources per confirmed molecular-energy calculation by **`52%` to `60%` vs. the best baseline**, delivered up to **`3.00x` qualifying workloads per billed unit** via simultaneous multi-circuit execution, and passed **`10/10` fresh + `5/5` (`+32h`)** `15`-qubit dense QFT checks where both baselines passed `0`.
-- **The significance:** Teams can stretch finite IBM second, IQM credit, and AWS Braket budgets further while keeping wider, heavily connected circuits above quality thresholds.
-- **The boundary:** On small, lightly connected circuits (`3Q-6Q` local chains), standard compilers perform near parity; baseline wins (`27/107` on the historical IBM corpus, `6/36` in the multi-cloud atlas) and unresolved `16Q-17Q` limits are published openly.
-- **The evidence:** Simplified opening chart and compact summary tables below, backed by [`PORTFOLIO_ACCOUNTING_LEDGER.json`](PORTFOLIO_ACCOUNTING_LEDGER.json), [`DETAILED_TECHNICAL_REPORT.md`](DETAILED_TECHNICAL_REPORT.md), and offline verification scripts.
+Separate studies cover six superconducting gate-based processors (IBM Fez, Kingston, and Marrakesh; IQM Emerald and Garnet; and Rigetti Cepheus-1-108Q on Amazon Braket) plus a neutral-atom optimization study on 256-atom QuEra Aquila. Standard compilers (Qiskit SABRE, Qiskit VF2, Quantinuum TKET, and IQM-supported Qiskit) remain competitive and win specific regimes - including zero-SWAP 1D chains, inverse QFT on IQM, and 27 of 107 historical IBM runs - all published in full below.
 
-### What Changed (`2026-11-26` Release `v2026.11.26`)
-- Added Repository `#15` ([`prometheus-iqm-validation-campaign`](https://github.com/PrometheusDynamicsCanada/prometheus-iqm-validation-campaign)) (`214` unique IQM Resonance records = `212` completed QPU jobs + `2` unbilled `0.00`-credit operational records, `992` PUBs, `1,865,728` physical shots across `54Q` `IQM Emerald` and `20Q` `IQM Garnet`, `0.0000` credit discrepancy): led by the preregistered **`84`-job `6Q-11Q` Seven-Family Sweep on `IQM Garnet`** (`336` circuit executions: `#1` $F_B = 0.7609$ vs. `0.7546` `IQM-Supported Qiskit` [`+0.83%`] and `0.7267` `Qiskit VF2 O3`/`SABRE O3` [`+4.71%`], `23/42` observed cell rankings, `5/7` family averages, `+17.0%` Forward QFT peak mass, `#1` QAOA `<C>` across all `6` widths `6Q-11Q`, `-5.23%` to `-8.99%` `CZ`), **two-window equal-opportunity `4-Way` spatial packing** (`#1` `6Q` $F_B = 0.8863$, `8/8` passes, tied-lowest `3.00 cr` [`-75.0%` vs. `12.00 cr` unpacked]), and **full-Hamiltonian `4Q H2` (`4.016 mHa` `5-Way` packed) & `6Q LiH` (`88.996 mHa` raw)** chemistry. Reconciled portfolio totals rose from `867 -> 1,081` unique records (`22.77M -> 24.64M` shots, `0` duplicates).
+- **Three plain-English terms used across these studies:** **Compiler** - software that maps an algorithm's ideal circuit onto working physical qubits and couplers; **Packing** - running several independent smaller circuits simultaneously on separated regions of one chip so a single hardware job returns multiple results; **Measurement shots** - repeated executions of the same circuit (typically 1,024 to 4,096 per run) used to estimate output probabilities.
+- **Available today vs. funded next:** Customers can request a supported evaluation on 5 to 50 OpenQASM circuits or book a live Pilot Console demonstration today. Partner funding is aimed at packaging the customer Python SDK, 24/7 queue failover, and always-on multi-tenant web access.
 
 ![As non-local circuits widen, Prometheus retains higher output-distribution agreement](assets/fig0_simple_scaling_absolute_and_gain.png)
-*Opening summary: Absolute output-distribution agreement (`0` to `1.0`) and `%` change strictly vs. Best Baseline (`max(SABRE O3, TKET)`) across `3Q-13Q` Central-Hub Star and `7Q-23Q` Dense All-to-All circuits (`N = 69` completed 3-way IBM Heron jobs).*
+*Summary figure: Average output agreement (0 to 1.0) and percent gain versus the strongest baseline across 3-to-13-qubit star and 7-to-23-qubit dense all-to-all circuits on 156-qubit IBM Heron processors (69 completed three-way jobs).*
+
+**[Read the detailed results](#detailed-results) · [Verify the data](#verify-the-data) · [Request an evaluation](https://prometheusdynamics.ca/connect/) · [Book a demonstration](mailto:william@prometheusdynamics.ca?subject=Prometheus%20Evaluation)**
 
 ---
 
+<a id="detailed-results"></a>
 ## 1. Six Practical Questions & Primary Case Studies
 
 | Question | Principal Measured Result | Case-Study Repository |
@@ -34,7 +32,7 @@
 
 ## 2. Executive Compiler Summary (`N = 107` Completed 3-Way IBM Heron Jobs, `321` Circuits, `4,964,352` Shots)
 
-*Hardware IDs:* `dbajlrhgv2cc73e6vuj0` .. `daf9p65nj4cs73ag3f20` across `ibm_fez`, `ibm_kingston`, and `ibm_marrakesh` (`4Q-23Q`, `*(mean)*` values shown; `*(median)*` values and `69`-job Dense `K_N` breakdown are in the expandable section below).
+*Hardware IDs:* `dbajlrhgv2cc73e6vuj0` .. `daf9p65nj4cs73ag3f20` across `ibm_fez`, `ibm_kingston`, and `ibm_marrakesh` (`4Q-23Q`, *(mean)* values shown; *(median)* values and `69`-job Dense `K_N` breakdown are in the expandable section below).
 
 | Compiler (`N = 107` Completed 3-Way Jobs) | Output-Distribution Agreement $F_B$ `(↑)` | Squared Hellinger $F_H$ `(↑)` | `HOP` `(↑)` | `TVD` `(↓)` | `XEB` `(↑)` | Entropy `(↓)` | `2Q` `CZ` / Depth `(↓)` | Mean $F_B$ Delta |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -46,11 +44,15 @@
 
 ---
 
+<a id="verify-the-data"></a>
 ## Inspect the Evidence & Reproduce Supported Checks Offline
 
 - **Command:** `python scripts/verify_portfolio_accounting.py`
 - **Dependencies & measured runtime:** Python 3 standard library only (`0` cloud credentials, **`~0.06 s`** measured runtime; verifies `1,081/1,081` unique IDs, `0` cross-repo duplicates, `107`-job raw corpus arithmetic, and `38/38` SHA-256 digests).
 - **Start a pilot or investor briefing:** [william@prometheusdynamics.ca](mailto:william@prometheusdynamics.ca) | [prometheusdynamics.ca](https://prometheusdynamics.ca)
+
+
+*Release note (`v2026.11.26`):* Added Repository #15 ([`prometheus-iqm-validation-campaign`](https://github.com/PrometheusDynamicsCanada/prometheus-iqm-validation-campaign), 212 completed hardware jobs / 214 IQM Resonance records, 1,865,728 shots across 54Q IQM Emerald and 20Q IQM Garnet), updating reconciled portfolio totals from 867 to 1,081 unique cloud records (1,069 completed benchmark jobs/tasks + 12 auxiliary records; 24.64M shots; 0 duplicates).
 
 ---
 
@@ -92,7 +94,7 @@ Global portfolio totals are maintained in [`PORTFOLIO_ACCOUNTING_LEDGER.json`](P
 
 ### Dense All-to-All `K_N` Subset (`N = 69` Completed 3-Way IBM Heron Jobs, `7Q-23Q`, `207` Circuits, `3,317,760` Shots)
 
-| Compiler (`N = 69` `K_N` Jobs) | $F_B$ `*(mean / med)*` `(↑)` | $F_H$ `*(mean / med)*` `(↑)` | `HOP` `*(mean / med)*` `(↑)` | `TVD` `*(mean / med)*` `(↓)` | `XEB` `*(mean / med)*` `(↑)` | Entropy `*(mean / med)*` `(↓)` | `2Q` `CZ` / Depth `*(mean)*` `(↓)` | Pairwise Wins |
+| Compiler (`N = 69` `K_N` Jobs) | $F_B$ *(mean / med)* `(↑)` | $F_H$ *(mean / med)* `(↑)` | `HOP` *(mean / med)* `(↑)` | `TVD` *(mean / med)* `(↓)` | `XEB` *(mean / med)* `(↑)` | Entropy *(mean / med)* `(↓)` | `2Q` `CZ` / Depth *(mean)* `(↓)` | Pairwise Wins |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Qiskit SABRE O3** | `0.1731` / `0.0963` | `0.0745` / `0.0093` | `61.08%` / `59.19%` | `0.8035` / `0.8571` | `228.7` / `80.3` | `12.72` / `13.53` | `410.4` / `361.4` | `12 / 69` vs. Prom |
 | **Quantinuum TKET** | `0.1091` / `0.0321` | `0.0466` / `0.0010` | `58.54%` / `58.72%` | `0.8761` / `0.9440` | `40.1` / `22.9` | `12.94` / `13.79` | `667.9` / `505.3` | `1 / 69` vs. Prom |
